@@ -219,6 +219,12 @@
             padding: 10px 20px;
             background-color: var(--mainColor)
         }
+
+        @media (max-width: 991px) {
+            .section_about_us {
+                padding: 30px 15px;
+            }
+        }
     </style>
     <link rel="preload" as="script" href="/site/js/count-down.js?1743048451127" />
     <script src="/site/js/count-down.js?1743048451127" type="text/javascript"></script>

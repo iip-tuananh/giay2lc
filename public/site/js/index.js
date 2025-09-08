@@ -153,6 +153,32 @@ $(window).on('scroll  mousemove touchstart',function(){
 					nextEl: '.testimonial-swiper .swiper-button-next',
 					prevEl: '.testimonial-swiper .swiper-button-prev',
 				},
+                breakpoints: {
+					300: {
+						slidesPerView: 1.55,
+						spaceBetween: 10
+					},
+					500: {
+						slidesPerView: 2,
+						spaceBetween: 10
+					},
+					640: {
+						slidesPerView: 2.5,
+						spaceBetween: 10
+					},
+					768: {
+						slidesPerView: 2.5,
+						spaceBetween: 10
+					},
+					992: {
+						slidesPerView: 3.5,
+						spaceBetween: 10
+					},
+					1200: {
+						slidesPerView: 5,
+						spaceBetween: 10
+					}
+				}
 			});
 			var swiperPartner = new Swiper('.partner-swiper', {
                 slidesPerView: 6,
@@ -166,6 +192,32 @@ $(window).on('scroll  mousemove touchstart',function(){
 					nextEl: '.partner-swiper .swiper-button-next',
 					prevEl: '.partner-swiper .swiper-button-prev',
 				},
+                breakpoints: {
+					300: {
+						slidesPerView: 1.55,
+						spaceBetween: 10
+					},
+					500: {
+						slidesPerView: 2,
+						spaceBetween: 10
+					},
+					640: {
+						slidesPerView: 4,
+						spaceBetween: 20
+					},
+					768: {
+						slidesPerView: 4,
+						spaceBetween: 20
+					},
+					992: {
+						slidesPerView: 5,
+						spaceBetween: 20
+					},
+					1200: {
+						slidesPerView: 6,
+						spaceBetween: 20
+					}
+				}
 			});
 			var swiper = new Swiper('.swipertab', {
 				slidesPerView: 4,
