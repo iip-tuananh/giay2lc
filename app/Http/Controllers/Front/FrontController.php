@@ -173,7 +173,7 @@ class FrontController extends Controller
 
     public function showProductDetail($slug)
     {
-        // try {
+        try {
         $categories = Category::getAllCategory();
         $product = Product::with([
             'product_rates' => function ($q) {
@@ -232,10 +232,10 @@ class FrontController extends Controller
 
 
         return view('site.products.product_detail', compact('categories', 'product', 'productsRelated', 'category', 'arr_product_rate_images', 'bestSellerProducts', 'canReview', 'vouchers'));
-        // } catch (\Exception $exception) {
-        //     return view('site.errors');
-        //     Log::error($exception);
-        // }
+        } catch (\Exception $exception) {
+            return view('site.errors');
+            Log::error($exception);
+        }
     }
 
 
