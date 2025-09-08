@@ -1,6 +1,6 @@
 @extends('site.layouts.master')
 @section('title')
-    <title>{{ "Không tìm thấy trang - " . ucfirst($_SERVER['HTTP_HOST']) }}</title>
+    {{ "Không tìm thấy trang - " . ucfirst($_SERVER['HTTP_HOST']) }}
 @endsection
 @section('css')
 
