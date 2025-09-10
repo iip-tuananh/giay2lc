@@ -89,8 +89,8 @@
             // }
 
             // Biên dịch lại nội dung bên trong container
-            var container = angular.element(document.getElementsByClassName('item_product_main'));
-            $compile(container.contents())($scope);
+            // var container = angular.element(document.getElementsByClassName('item_product_main'));
+            // $compile(container.contents())($scope);
 
             var popup = angular.element(document.getElementById('popup-cart-mobile'));
             $compile(popup.contents())($scope);

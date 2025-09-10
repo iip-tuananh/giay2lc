@@ -140,7 +140,7 @@
                             @endif
                         </li>
                         <li class="header-cart block-cart">
-                            <a href="/cart" class="icon" aria-label="Giỏ hàng" title="Giỏ hàng">
+                            <a href="{{route('cart.checkout')}}" class="icon" aria-label="Giỏ hàng" title="Giỏ hàng">
                                 <img src="/site/images/shopping-cart.png" alt="" width="24" height="24">
                                 <span class="title">Giỏ hàng</span>
                                 <span class="count_item_pr count-item" ng-if="cart.count > 0"><% cart.count %></span>
