@@ -1,6 +1,7 @@
 <?php
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Request;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 Route::group(['namespace' => 'Front'], function () {
     Route::group(['prefix' => 'client'], function () {
