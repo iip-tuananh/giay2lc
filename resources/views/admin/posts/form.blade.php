@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-9 col-sm-8 col-xs-12">
+	<div class="col-md-9 col-sm-8 col-xs-12"  ng-init="activeLang='vi'">
 		<div class="form-group custom-group mb-4">
             <label class="form-label required-label">Danh mục</label>
             <ui-select class="" remove-selected="true" ng-model="form.cate_id" theme="select2">
@@ -15,27 +15,81 @@
             </span>
         </div>
 
-		<div class="form-group custom-group mb-4">
-			<label class="form-label required-label">Tiêu đề bài viết</label>
-			<input class="form-control" ng-model="form.name" type="text">
-			<span class="invalid-feedback d-block" role="alert">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-white border-0 pb-0">
+                <div class="segmented-tabs" role="tablist" aria-label="Ngôn ngữ">
+                    <button type="button"
+                            class="seg-btn"
+                            ng-class="{'active': activeLang==='vi'}"
+                            ng-click="activeLang='vi'"
+                            aria-selected="<% activeLang==='vi' %>">
+                        Tiếng Việt
+                    </button>
+                    <button type="button"
+                            class="seg-btn"
+                            ng-class="{'active': activeLang==='en'}"
+                            ng-click="activeLang='en'"
+                            aria-selected="<% activeLang==='en' %>">
+                        English
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="card-body pt-0">
+                <!-- TAB: VIETNAMESE -->
+                <div ng-show="activeLang==='vi'">
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label required-label">Tiêu đề bài viết</label>
+                        <input class="form-control" ng-model="form.name" type="text">
+                        <span class="invalid-feedback d-block" role="alert">
 				<strong><% errors.name[0] %></strong>
 			</span>
-		</div>
-		<div class="form-group custom-group mb-4">
-			<label class="form-label">Tóm tắt nội dung</label>
-			<textarea id="my-textarea" class="form-control" ng-model="form.intro" rows="3"></textarea>
-			<span class="invalid-feedback d-block" role="alert">
+                    </div>
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Tóm tắt nội dung</label>
+                        <textarea id="my-textarea" class="form-control" ng-model="form.intro" rows="3"></textarea>
+                        <span class="invalid-feedback d-block" role="alert">
 				<strong><% errors.intro[0] %></strong>
 			</span>
-		</div>
-		<div class="form-group custom-group mb-4">
-			<label class="form-label required-label">Nội dung bài viết</label>
-			<textarea id="editor" class="form-control" ck-editor ng-model="form.body" rows="7"></textarea>
-			<span class="invalid-feedback d-block" role="alert">
+                    </div>
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label required-label">Nội dung bài viết</label>
+                        <textarea id="editor" class="form-control" ck-editor ng-model="form.body" rows="7"></textarea>
+                        <span class="invalid-feedback d-block" role="alert">
 				<strong><% errors.body[0] %></strong>
 			</span>
-		</div>
+                    </div>
+                </div>
+
+                <div ng-show="activeLang==='en'">
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label required-label">Title (EN)</label>
+                        <input class="form-control" ng-model="form.name_en" type="text">
+                        <span class="invalid-feedback d-block" role="alert">
+				<strong><% errors.name_en[0] %></strong>
+			</span>
+                    </div>
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Intro (EN)</label>
+                        <textarea id="my-textarea" class="form-control" ng-model="form.intro_en" rows="3"></textarea>
+                        <span class="invalid-feedback d-block" role="alert">
+				<strong><% errors.intro_en[0] %></strong>
+			</span>
+                    </div>
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label required-label">Content (EN)</label>
+                        <textarea id="editor" class="form-control" ck-editor ng-model="form.body_en" rows="7"></textarea>
+                        <span class="invalid-feedback d-block" role="alert">
+				<strong><% errors.body_en[0] %></strong>
+			</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
 	</div>
 	<div class="col-md-3 col-sm-4 col-xs-12">
 		<div class="form-group custom-group mb-4">

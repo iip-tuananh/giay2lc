@@ -37,8 +37,10 @@
         get submit_data() {
             let data = {
                 name: this.name,
+                name_en: this.name_en,
                 parent_id: this._parent_id,
                 intro: this.intro,
+                intro_en: this.intro_en,
             }
             data = jsonToFormData(data);
             let image = this.image.submit_data;

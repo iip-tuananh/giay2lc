@@ -137,6 +137,16 @@
                 revenue_percent_2: this.revenue_percent_2,
                 revenue_percent_1: this.revenue_percent_1,
                 text_top_header: this.text_top_header,
+
+
+
+                web_title_en: this.web_title_en,
+                short_name_company_en: this.short_name_company_en,
+                address_company_en: this.address_company_en,
+                meta_title_en: this.meta_title_en,
+                address_center_insurance_en: this.address_center_insurance_en,
+                text_top_header_en: this.text_top_header_en,
+                web_des_en: this.web_des_en,
             }
             data = jsonToFormData(data);
             let image = this.image.submit_data;

@@ -38,7 +38,9 @@
             </li>
 
             <li
-                class="nav-item has-treeview  {{ request()->is('common/products') || request()->is('admin/products*') || request()->is('admin/categories') || request()->is('admin/categories*') || request()->is('admin/tags') || request()->is('admin/tags*') || request()->is('admin/attributes') ? 'menu-open' : '' }} ">
+                class="nav-item has-treeview  {{ request()->is('common/products') || request()->is('admin/products*')
+ || request()->is('admin/categories') || request()->is('admin/categories*') || request()->is('admin/tags')
+ || request()->is('admin/tags*') || request()->is('admin/tag-groups') ? 'menu-open' : '' }} ">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fab fa-dropbox"></i>
                     <p>
@@ -76,10 +78,10 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('attributes.index') }}"
-                            class="nav-link {{ Request::routeIs('attributes.index') ? 'active' : '' }}">
+                        <a href="{{ route('tagGroups.index') }}"
+                            class="nav-link {{ Request::routeIs('tagGroups.index') ? 'active' : '' }}">
                             <i class="far fas  fa-angle-right nav-icon"></i>
-                            <p>Danh mục thuộc tính hàng hóa</p>
+                            <p>Danh mục nhóm thẻ tag</p>
                         </a>
                     </li>
                     <li class="nav-item">

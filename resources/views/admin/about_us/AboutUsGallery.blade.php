@@ -17,6 +17,8 @@
             return {
                 title: this.title,
                 content: this.content,
+                title_en: this.title_en,
+                content_en: this.content_en,
             }
         }
     }

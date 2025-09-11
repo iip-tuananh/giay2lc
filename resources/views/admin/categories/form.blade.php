@@ -8,67 +8,114 @@
             cursor: pointer;
         }
     </style>
-    <div class="col-sm-8">
-       <div class="form-group custom-group mb-4">
-           <label class="form-label">Danh mục cấp cha</label>
-           <ui-select class="" remove-selected="true" ng-model="form.parent_id" theme="select2">
-               <ui-select-match placeholder="Chọn danh mục">
-                   <% $select.selected.name %>
 
-                   <span class="span-right" ng-if="form.parent_id != 0">
-                        <a class="del-button remove-category"><i class="fa fa-times"></i></a>
-                   </span>
-               </ui-select-match>
 
+
+
+    <div class="col-sm-8" ng-init="activeLang='vi'">
+        <div class="form-group custom-group mb-4">
+            <label class="form-label">Danh mục cấp cha</label>
+            <ui-select remove-selected="true" ng-model="form.parent_id" theme="select2">
+                <ui-select-match placeholder="Chọn danh mục">
+                    <% $select.selected.name %>
+                    <span class="span-right" ng-if="form.parent_id != 0">
+          <a class="del-button remove-category"><i class="fa fa-times"></i></a>
+        </span>
+                </ui-select-match>
                 <ui-select-choices repeat="t.id as t in (form.all_categories | filter: $select.search)">
                     <span ng-bind="t.name"></span>
-
                     <span class="span-right" ng-if="t.id == form.parent_id">
-                         <a class="del-button remove-category"><i class="fa fa-times"></i></a>
-                    </span>
+          <a class="del-button remove-category"><i class="fa fa-times"></i></a>
+        </span>
                 </ui-select-choices>
-
             </ui-select>
             <span class="invalid-feedback d-block" role="alert">
-                <strong><% errors.parent_id[0] %></strong>
-            </span>
+      <strong><% errors.parent_id[0] %></strong>
+    </span>
         </div>
 
-        <div class="form-group custom-group mb-4">
-            <label class="form-label required-label">Tên danh mục</label>
-            <input class="form-control " type="text" ng-model="form.name">
-            <span class="invalid-feedback d-block" role="alert">
-                <strong><% errors.name[0] %></strong>
-            </span>
+
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-white border-0 pb-0">
+                <div class="segmented-tabs" role="tablist" aria-label="Ngôn ngữ">
+                    <button type="button"
+                            class="seg-btn"
+                            ng-class="{'active': activeLang==='vi'}"
+                            ng-click="activeLang='vi'"
+                            aria-selected="<% activeLang==='vi' %>">
+                        Tiếng Việt
+                    </button>
+                    <button type="button"
+                            class="seg-btn"
+                            ng-class="{'active': activeLang==='en'}"
+                            ng-click="activeLang='en'"
+                            aria-selected="<% activeLang==='en' %>">
+                         English
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="card-body pt-0">
+                <!-- TAB: VIETNAMESE -->
+                <div ng-show="activeLang==='vi'">
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label required-label">Tên danh mục (VI)</label>
+                        <input class="form-control" type="text" ng-model="form.name" placeholder="Ví dụ: Trà thảo mộc">
+                        <span class="invalid-feedback d-block" role="alert"><strong><% errors.name[0] %></strong></span>
+                    </div>
+
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Trỏ trực tiếp đến link (VI)</label>
+                        <input class="form-control" type="text" ng-model="form.link" placeholder="/vi/duong-dan">
+                        <span class="invalid-feedback d-block" role="alert"><strong><% errors.link[0] %></strong></span>
+                    </div>
+
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Mô tả ngắn gọn (VI)</label>
+                        <textarea class="form-control" rows="3" ng-model="form.short_des" placeholder="Mô tả ngắn..."></textarea>
+                        <span class="invalid-feedback d-block" role="alert"><strong><% errors.short_des[0] %></strong></span>
+                    </div>
+
+                    <div class="form-group custom-group mb-1">
+                        <label class="form-label">Mô tả chi tiết (VI)</label>
+                        <textarea class="form-control ck-editor" ck-editor rows="4" ng-model="form.intro"></textarea>
+                        <span class="invalid-feedback d-block" role="alert"><strong><% errors.intro[0] %></strong></span>
+                    </div>
+                </div>
+
+                <!-- TAB: ENGLISH -->
+                <div ng-show="activeLang==='en'">
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label required-label">Category name (EN)</label>
+                        <input class="form-control" type="text" ng-model="form.name_en" placeholder="e.g. Herbal Tea">
+                        <span class="invalid-feedback d-block" role="alert"><strong><% errors.name_en[0] %></strong></span>
+                    </div>
+
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Direct link (EN)</label>
+                        <input class="form-control" type="text" ng-model="form.link_en" placeholder="/en/path">
+                        <span class="invalid-feedback d-block" role="alert"><strong><% errors.link_en[0] %></strong></span>
+                    </div>
+
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Short description (EN)</label>
+                        <textarea class="form-control" rows="3" ng-model="form.short_des_en" placeholder="Short intro..."></textarea>
+                        <span class="invalid-feedback d-block" role="alert"><strong><% errors.short_des_en[0] %></strong></span>
+                    </div>
+
+                    <div class="form-group custom-group mb-1">
+                        <label class="form-label">Detailed description (EN)</label>
+                        <textarea class="form-control ck-editor" ck-editor rows="4" ng-model="form.intro_en"></textarea>
+                        <span class="invalid-feedback d-block" role="alert"><strong><% errors.intro_en[0] %></strong></span>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group custom-group mb-4">
-            <label class="form-label">Trỏ trực tiếp đến link</label>
-            <input class="form-control " type="text" ng-model="form.link">
-        </div>
-
-{{--        <div class="form-group custom-group mb-4" ng-if="form.parent_id == 0 || ( mode == 'create')">--}}
-{{--            <label class="form-label">Icon</label>--}}
-{{--            <input class="form-control" type="text" ng-model="form.icon">--}}
-{{--        </div>--}}
-
-        <div class="form-group custom-group mb-4">
-            <label class="form-label">Mô tả ngắn gọn</label>
-            <textarea class="form-control" rows="3" ng-model="form.short_des"></textarea>
-            <span class="invalid-feedback d-block" role="alert">
-                <strong><% errors.short_des[0] %></strong>
-            </span>
-        </div>
-
-        <div class="form-group custom-group mb-4">
-            <label class="form-label">Mô tả chi tiết</label>
-            <textarea class="form-control ck-editor" ck-editor rows="2" ng-model="form.intro"></textarea>
-            <span class="invalid-feedback d-block" role="alert">
-                <strong><% errors.intro[0] %></strong>
-            </span>
-        </div>
-
     </div>
+
+
+
     <div class="col-sm-4">
         <div class="form-group custom-group mb-4">
             <label class="form-label required-label">Hiển thị ngoài trang chủ</label>

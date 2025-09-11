@@ -60,6 +60,7 @@ class CartController extends Controller
             'attributes' => [
                 'image' => $product->image->path ?? '',
                 'slug' => $product->slug,
+                'name_en' => $product->name_en,
                 'base_price' => $product->base_price,
                 'attributes' => $request['attributes']
             ]
@@ -68,6 +69,7 @@ class CartController extends Controller
         $noti_product = [
             'product_id' => $product->id,
             'product_name' => $product->name,
+            'product_name_en' => $product->name_en,
             'product_image' => $product->image->path ?? '',
             'product_price' => $product->price,
             'product_qty' => $request->qty ? (int)$request->qty : 1,

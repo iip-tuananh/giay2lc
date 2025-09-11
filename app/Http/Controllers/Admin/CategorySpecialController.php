@@ -75,6 +75,7 @@ class CategorySpecialController extends Controller
             $request->all(),
             [
                 'name' => 'required|max:255',
+                'name_en' => 'required|max:255',
                 'code' => 'required|max:255|unique:category_special,code',
                 'type' => 'required',
                 'show_home_page' => 'required',
@@ -107,6 +108,7 @@ class CategorySpecialController extends Controller
             }
 
             $object->name = $request->name;
+            $object->name_en = $request->name_en;
             $object->code = $request->code;
             $object->type = $request->type;
             $object->order_number = $request->order_number;
@@ -144,6 +146,7 @@ class CategorySpecialController extends Controller
             $request->all(),
             [
                 'name' => 'required|max:255',
+                'name_en' => 'required|max:255',
                 'code' => 'required|unique:category_special,code,' . $id,
                 'type' => 'required',
                 'show_home_page' => 'required',
@@ -175,6 +178,7 @@ class CategorySpecialController extends Controller
             $object = ThisModel::findOrFail($id);
             $object->code = $request->code;
             $object->name = $request->name;
+            $object->name_en = $request->name_en;
             $object->type = $request->type;
             $object->order_number = $request->order_number;
             $object->show_home_page = $request->show_home_page;

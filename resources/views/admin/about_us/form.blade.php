@@ -48,23 +48,69 @@
     </li>
 </ul>
 <div class="tab-content" id="myTabContent1">
+
     <div class="tab-pane fade show active p-3" id="about-us-home" role="tabpanel" aria-labelledby="about-us-home-tab">
         <div class="row">
-            <div class="col-md-8 col-xs-12">
-                <div class="form-group custom-group">
-                    <label class="form-label required-label">Tiêu đề</label>
-                    <input class="form-control" ng-model="form.home_title" type="text">
-                    <span class="invalid-feedback d-block" role="alert">
+            <div class="col-md-8 col-xs-12" ng-init="activeLang='vi'">
+
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-white border-0 pb-0">
+                        <div class="segmented-tabs" role="tablist" aria-label="Ngôn ngữ">
+                            <button type="button"
+                                    class="seg-btn"
+                                    ng-class="{'active': activeLang==='vi'}"
+                                    ng-click="activeLang='vi'"
+                                    aria-selected="<% activeLang==='vi' %>">
+                                Tiếng Việt
+                            </button>
+                            <button type="button"
+                                    class="seg-btn"
+                                    ng-class="{'active': activeLang==='en'}"
+                                    ng-click="activeLang='en'"
+                                    aria-selected="<% activeLang==='en' %>">
+                                English
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body pt-0">
+                        <!-- TAB: VIETNAMESE -->
+                        <div ng-show="activeLang==='vi'">
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Tiêu đề</label>
+                                <input class="form-control" ng-model="form.home_title" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
                         <strong><% errors.home_title[0] %></strong>
                     </span>
-                </div>
-                <div class="form-group custom-group">
-                    <label class="form-label required-label">Nội dung</label>
-                    <textarea class="form-control ck-editor" ck-editor ng-model="form.home_description" rows="3"></textarea>
-                    <span class="invalid-feedback d-block" role="alert">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Nội dung</label>
+                                <textarea class="form-control ck-editor" ck-editor ng-model="form.home_description" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
                         <strong><% errors.home_description[0] %></strong>
                     </span>
+                            </div>
+                        </div>
+
+                        <div ng-show="activeLang==='en'">
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Tiêu đề</label>
+                                <input class="form-control" ng-model="form.home_title_en" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
+                        <strong><% errors.home_title_en[0] %></strong>
+                    </span>
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Nội dung</label>
+                                <textarea class="form-control ck-editor" ck-editor ng-model="form.home_description_en" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
+                        <strong><% errors.home_description_en[0] %></strong>
+                    </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
             <div class="col-md-4 col-xs-12">
                 <div class="form-group text-center mb-4">
@@ -91,23 +137,72 @@
             </div>
         </div>
     </div>
+
+
+
+
     <div class="tab-pane fade p-3" id="about-us-why-choose" role="tabpanel" aria-labelledby="about-us-why-choose-tab">
         <div class="row">
-            <div class="col-md-8 col-xs-12">
-                <div class="form-group custom-group">
-                    <label class="form-label required-label">Tiêu đề</label>
-                    <input class="form-control" ng-model="form.home_why_choose_title" type="text">
-                    <span class="invalid-feedback d-block" role="alert">
+            <div class="col-md-8 col-xs-12" ng-init="activeLang='vi'">
+
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-white border-0 pb-0">
+                        <div class="segmented-tabs" role="tablist" aria-label="Ngôn ngữ">
+                            <button type="button"
+                                    class="seg-btn"
+                                    ng-class="{'active': activeLang==='vi'}"
+                                    ng-click="activeLang='vi'"
+                                    aria-selected="<% activeLang==='vi' %>">
+                                Tiếng Việt
+                            </button>
+                            <button type="button"
+                                    class="seg-btn"
+                                    ng-class="{'active': activeLang==='en'}"
+                                    ng-click="activeLang='en'"
+                                    aria-selected="<% activeLang==='en' %>">
+                                English
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body pt-0">
+                        <!-- TAB: VIETNAMESE -->
+                        <div ng-show="activeLang==='vi'">
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Tiêu đề</label>
+                                <input class="form-control" ng-model="form.home_why_choose_title" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
                         <strong><% errors.home_why_choose_title[0] %></strong>
                     </span>
-                </div>
-                <div class="form-group custom-group">
-                    <label class="form-label required-label">Nội dung ngắn gọn</label>
-                    <textarea class="form-control ck-editor" ck-editor ng-model="form.home_why_choose_description" rows="3"></textarea>
-                    <span class="invalid-feedback d-block" role="alert">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Nội dung ngắn gọn</label>
+                                <textarea class="form-control ck-editor" ck-editor ng-model="form.home_why_choose_description" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
                         <strong><% errors.home_why_choose_description[0] %></strong>
                     </span>
+                            </div>
+                        </div>
+
+                        <div ng-show="activeLang==='en'">
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Tiêu đề</label>
+                                <input class="form-control" ng-model="form.home_why_choose_title_en" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
+                        <strong><% errors.home_why_choose_title_en[0] %></strong>
+                    </span>
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Nội dung ngắn gọn</label>
+                                <textarea class="form-control ck-editor" ck-editor ng-model="form.home_why_choose_description_en" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
+                        <strong><% errors.home_why_choose_description_en[0] %></strong>
+                    </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
             <div class="col-md-4 col-xs-12">
                 <div class="form-group text-center mb-4">
@@ -165,50 +260,124 @@
                     </span>
                 </div>
             </div>
+
+
             <div class="col-md-8 col-xs-12">
-                <input type="text" class="form-control" ng-model="c.title" placeholder="Tiêu đề <% index + 1 %>" style="display: inline-block; width: calc(100% - 70px);">
-                <button style="width: 70px; height: calc(2.25rem + 2px) !important"  class="btn btn-danger btn-sm float-right" ng-click="form.removeWhyChooseCriteria(index)">
+                <!-- Tiêu đề (VI) + nút Xóa -->
+                <input type="text" class="form-control" ng-model="c.title"
+                       placeholder="Tiêu đề <% index + 1 %>"
+                       style="display:inline-block;width:calc(100% - 70px);">
+                <button style="width:70px;height:calc(2.25rem + 2px)!important"
+                        class="btn btn-danger btn-sm float-right"
+                        ng-click="form.removeWhyChooseCriteria(index)">
                     <i class="fa fa-times"></i> Xóa
                 </button>
                 <span class="invalid-feedback d-block" role="alert">
-                    <strong><% errors['why_choose_criterias.' + index + '.title'][0] %></strong>
-                </span>
+      <strong><% errors['why_choose_criterias.' + index + '.title'][0] %></strong>
+    </span>
 
+                <!-- Nội dung (VI) -->
                 <textarea class="form-control ck-editor" ck-editor rows="5" ng-model="c.content"
-                    placeholder="Nội dung ảnh tiêu chí <% index + 1 %>"></textarea>
+                          placeholder="Nội dung ảnh tiêu chí <% index + 1 %>"></textarea>
                 <span class="invalid-feedback d-block" role="alert">
-                    <strong>
-                        <% errors['why_choose_criterias.' + index + '.content'][0] %>
-                    </strong>
-                </span>
-            </div>
+      <strong><% errors['why_choose_criterias.' + index + '.content'][0] %></strong>
+    </span>
 
+                <!-- ===== BẢN TIẾNG ANH ===== -->
+                <div class="mt-3 small text-muted">Bản tiếng Anh</div>
+
+                <!-- Title (EN) -->
+                <input type="text" class="form-control mt-2" ng-model="c.title_en"
+                       placeholder="English title <% index + 1 %>">
+                <span class="invalid-feedback d-block" role="alert">
+      <strong><% errors['why_choose_criterias.' + index + '.title_en'][0] %></strong>
+    </span>
+
+                <!-- Content (EN) -->
+                <textarea class="form-control ck-editor mt-2" ck-editor rows="5" ng-model="c.content_en"
+                          placeholder="English content <% index + 1 %>"></textarea>
+                <span class="invalid-feedback d-block" role="alert">
+      <strong><% errors['why_choose_criterias.' + index + '.content_en'][0] %></strong>
+    </span>
+            </div>
         </div>
     </div>
+
     <div class="tab-pane fade p-3" id="about-us" role="tabpanel" aria-labelledby="about-us-tab">
         <div class="row">
-            <div class="col-md-8 col-xs-12">
-                <div class="form-group custom-group">
-                    <label class="form-label required-label">Link giới thiệu chung (youtube)</label>
-                    <input class="form-control" ng-model="form.youtube_link" type="text">
-                    <span class="invalid-feedback d-block" role="alert">
+            <div class="col-md-8 col-xs-12" ng-init="activeLang='vi'">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-white border-0 pb-0">
+                        <div class="segmented-tabs" role="tablist" aria-label="Ngôn ngữ">
+                            <button type="button"
+                                    class="seg-btn"
+                                    ng-class="{'active': activeLang==='vi'}"
+                                    ng-click="activeLang='vi'"
+                                    aria-selected="<% activeLang==='vi' %>">
+                                Tiếng Việt
+                            </button>
+                            <button type="button"
+                                    class="seg-btn"
+                                    ng-class="{'active': activeLang==='en'}"
+                                    ng-click="activeLang='en'"
+                                    aria-selected="<% activeLang==='en' %>">
+                                English
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body pt-0">
+                        <!-- TAB: VIETNAMESE -->
+                        <div ng-show="activeLang==='vi'">
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Link giới thiệu chung (youtube)</label>
+                                <input class="form-control" ng-model="form.youtube_link" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
                         <strong><% errors.youtube_link[0] %></strong>
                     </span>
-                </div>
-                <div class="form-group custom-group">
-                    <label class="form-label required-label">Giới thiệu chung</label>
-                    <textarea class="form-control ck-editor" ck-editor ng-model="form.description" rows="3"></textarea>
-                    <span class="invalid-feedback d-block" role="alert">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Giới thiệu chung</label>
+                                <textarea class="form-control ck-editor" ck-editor ng-model="form.description" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
                         <strong><% errors.description[0] %></strong>
                     </span>
-                </div>
-                <div class="form-group custom-group">
-                    <label class="form-label required-label">Chi tiết</label>
-                    <textarea class="form-control ck-editor" ck-editor ng-model="form.content" rows="3"></textarea>
-                    <span class="invalid-feedback d-block" role="alert">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Chi tiết</label>
+                                <textarea class="form-control ck-editor" ck-editor ng-model="form.content" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
                         <strong><% errors.content[0] %></strong>
                     </span>
+                            </div>
+                        </div>
+
+                        <div ng-show="activeLang==='en'">
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Link giới thiệu chung (youtube)</label>
+                                <input class="form-control" ng-model="form.youtube_link_en" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
+                        <strong><% errors.youtube_link_en[0] %></strong>
+                    </span>
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Giới thiệu chung</label>
+                                <textarea class="form-control ck-editor" ck-editor ng-model="form.description_en" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
+                        <strong><% errors.description_en[0] %></strong>
+                    </span>
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Chi tiết</label>
+                                <textarea class="form-control ck-editor" ck-editor ng-model="form.content_en" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
+                        <strong><% errors.content_en[0] %></strong>
+                    </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
             <div class="col-md-4 col-xs-12">
                 <div class="form-group text-center mb-4">
@@ -293,6 +462,14 @@
                         <strong><% errors.mission[0] %></strong>
                     </span>
                 </div>
+
+                <div class="form-group custom-group">
+                    <label class="form-label required-label">Nội dung (EN)</label>
+                    <textarea class="form-control ck-editor" ck-editor ng-model="form.mission_en" rows="3"></textarea>
+                    <span class="invalid-feedback d-block" role="alert">
+                        <strong><% errors.mission_en[0] %></strong>
+                    </span>
+                </div>
             </div>
             <div class="col-md-4 col-xs-12">
                 <div class="form-group text-center mb-4">
@@ -330,6 +507,14 @@
                         <strong><% errors.vision[0] %></strong>
                     </span>
                 </div>
+
+                <div class="form-group custom-group">
+                    <label class="form-label required-label">Nội dung (EN)</label>
+                    <textarea class="form-control ck-editor" ck-editor ng-model="form.vision_en" rows="3"></textarea>
+                    <span class="invalid-feedback d-block" role="alert">
+                        <strong><% errors.vision_en[0] %></strong>
+                    </span>
+                </div>
             </div>
             <div class="col-md-4 col-xs-12">
                 <div class="form-group text-center mb-4">
@@ -364,6 +549,14 @@
                     <textarea class="form-control ck-editor" ck-editor ng-model="form.core_values" rows="3"></textarea>
                     <span class="invalid-feedback d-block" role="alert">
                         <strong><% errors.core_values[0] %></strong>
+                    </span>
+                </div>
+
+                <div class="form-group custom-group">
+                    <label class="form-label required-label">Nội dung (EN)</label>
+                    <textarea class="form-control ck-editor" ck-editor ng-model="form.core_values_en" rows="3"></textarea>
+                    <span class="invalid-feedback d-block" role="alert">
+                        <strong><% errors.core_values_en[0] %></strong>
                     </span>
                 </div>
             </div>

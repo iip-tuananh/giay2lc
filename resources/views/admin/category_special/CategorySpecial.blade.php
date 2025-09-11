@@ -36,6 +36,7 @@
         get submit_data() {
             let data = {
                 name: this.name,
+                name_en: this.name_en,
                 code: this.code,
                 type: this.type,
                 order_number: this.order_number,

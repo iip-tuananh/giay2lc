@@ -904,3 +904,58 @@ input:checked+label {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f3f3f3', endColorstr='#eee', GradientType=0);
     background-image: linear-gradient(top, #eee 0%, #f3f3f3 60%);
 }
+
+
+
+     /* Segmented Tabs — đẹp, tối giản */
+ :root{
+     /* bạn có thể dùng var(--brand) của site nếu có */
+     --tab-active: var(--brand, #111827);
+     --tab-bg: #f5f6f7;
+     --tab-border: #e5e7eb;
+ }
+
+.card-header {
+    margin-bottom: 20px;
+}
+.segmented-tabs{
+    display:inline-flex;
+    gap:4px;
+    padding:6px;
+    border:1px solid var(--tab-border);
+    background:var(--tab-bg);
+    border-radius:9999px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+}
+
+.seg-btn{
+    position:relative;
+    border:0;
+    background:transparent;
+    padding:8px 14px;
+    border-radius:9999px;
+    font-weight:600;
+    line-height:1;
+    transition: all .18s ease;
+    color:#374151;
+}
+
+.seg-btn:hover{ transform: translateY(-1px); }
+
+.seg-btn.active{
+    background: var(--tab-active);
+    color:#fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+
+.seg-btn:focus-visible{
+    outline: 2px solid var(--tab-active);
+    outline-offset: 2px;
+}
+
+/* Tự co khi màn nhỏ */
+@media (max-width:576px){
+    .segmented-tabs{ width:100%; justify-content:space-between; }
+    .seg-btn{ flex:1 1 0; text-align:center; }
+}
+

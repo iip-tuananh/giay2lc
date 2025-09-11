@@ -139,24 +139,28 @@
         <div class="container">
             <ul class="breadcrumb">
                 <li class="home">
-                    <a href="{{ route('front.home-page') }}" title="Trang chủ">
-                        <span>Trang chủ</span>
+                    <a href="{{ route('front.home-page') }}" title=" {{ __('menu.home') }}">
+                        <span> {{ __('menu.home') }}</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('front.show-product-category', $product->category->slug) }}"
-                        title="{{ $product->category->name }}">
-                        <span>{{ $product->category->name }}</span>
+                        title="{{ translate($product->category->name, $product->category->name_en)  }}">
+                        <span>{{ translate($product->category->name, $product->category->name_en)  }}</span>
                     </a>
                 </li>
                 <li>
                     <strong>
-                        <span>{{ $product->name }}</span>
+                        <span>{{ translate($product->name, $product->name_en)  }}</span>
                     </strong>
                 </li>
             </ul>
         </div>
     </section>
+    @php
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+    @endphp
+
     <section class="product layout-product" ng-controller="ProductDetailController">
         <div class="container">
             <div class="details-product">
@@ -171,7 +175,7 @@
                                             title="Click để xem">
                                             <img height="540" width="540"
                                                 src="{{ $product->image ? $product->image->path : 'https://placehold.co/600x400' }}"
-                                                alt="{{ $product->name }}"
+                                                alt="{{ translate($product->name, $product->name_en)  }}"
                                                 data-image="{{ $product->image ? $product->image->path : 'https://placehold.co/600x400' }}"
                                                 class="img-responsive mx-auto d-block lazy" />
                                         </a>
@@ -181,7 +185,7 @@
                                                 title="Click để xem">
                                                 <img height="540" width="540"
                                                     src="{{ $gallery->image ? $gallery->image->path : 'https://placehold.co/600x400' }}"
-                                                    alt="{{ $product->name }}"
+                                                    alt="{{ translate($product->name, $product->name_en)  }}"
                                                     data-image="{{ $gallery->image ? $gallery->image->path : 'https://placehold.co/600x400' }}"
                                                     class="img-responsive mx-auto d-block lazy" />
                                             </a>
@@ -197,7 +201,7 @@
                                         <div class="swiper-slide" data-hash="0">
                                             <div class="p-100">
                                                 <img src="{{ $product->image ? $product->image->path : 'https://placehold.co/600x400' }}"
-                                                    alt="{{ $product->name }}"
+                                                    alt="{{ translate($product->name, $product->name_en)  }}"
                                                     data-image="{{ $product->image ? $product->image->path : 'https://placehold.co/600x400' }}"
                                                     class="lazy" />
                                             </div>
@@ -206,7 +210,7 @@
                                             <div class="swiper-slide" data-hash="{{ $key + 1 }}">
                                                 <div class="p-100">
                                                     <img src="{{ $gallery->image ? $gallery->image->path : 'https://placehold.co/600x400' }}"
-                                                        alt="{{ $product->name }}"
+                                                        alt="{{ translate($product->name, $product->name_en)  }}"
                                                         data-image="{{ $gallery->image ? $gallery->image->path : 'https://placehold.co/600x400' }}"
                                                         class="lazy" />
                                                 </div>
@@ -225,10 +229,10 @@
                                 @if ($product->origin_name)
                                     <div class="product-vendor">
                                         <span class="title">Thương hiệu:</span>
-                                        <span class="vendor">{{ $product->origin_name }}</span>
+                                        <span class="vendor">{{ translate($product->origin_name, $product->origin_name_en)  }}</span>
                                     </div>
                                 @endif
-                                <h1 class="title-product">{{ $product->name }}</h1>
+                                <h1 class="title-product">{{ translate($product->name, $product->name_en)  }}</h1>
                                 <form id="add-to-cart-form" class="form-inline">
                                     <div class="price-box clearfix">
                                         @if ($product->base_price > 0 && $product->price > 0)
@@ -255,7 +259,10 @@
                                             </span>
                                         @else
                                             <span class="special-price">
-                                                <span class="price product-price">Liên hệ</span>
+                                                <span class="price product-price">
+
+                                                    {{ $locale == 'vi' ? 'Liên hệ' : 'Contact' }}
+                                                </span>
                                             </span>
                                         @endif
                                     </div>
@@ -301,14 +308,18 @@
                                                     </span>
                                                 </h2>
                                                 <div class="box-promotion">
-                                                    {!! $product->intro !!}
+                                                    @if($locale == 'vi')
+                                                        {!! $product->intro !!}
+                                                    @else
+                                                        {!! $product->intro_en !!}
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="clearfix form-group ">
                                             <div class="flex-quantity">
                                                 <div class="custom custom-btn-number show">
-                                                    <label class="sl section">Số lượng:</label>
+                                                    <label class="sl section">{{ $locale == 'vi' ? 'Số lượng' : 'Quantity' }}:</label>
                                                     <div class="input_number_product form-control">
                                                         <button class="btn_num num_1 button button_qty"
                                                             onClick="var result = document.getElementById('qty'); var qtypro = result.value; if( !isNaN( qtypro ) &amp;&amp; qtypro &gt; 1 ) result.value--;return false;"
@@ -328,18 +339,17 @@
                                                         <button type="submit"
                                                             class="btn btn_base normal_button btn_add_cart add_to_cart btn-cart"
                                                             ng-click="addToCartFromProductDetail()">
-                                                            Thêm vào giỏ hàng
+                                                            {{ $locale == 'vi' ? 'Thêm vào giỏ hàng' : 'Add To Cart' }}
                                                         </button>
                                                         <button type="button"
                                                             class="btn btn-lg btn-gray btn_buy btn-buyNow"
-                                                            ng-click="addToCartCheckoutFromProductDetail()">Mua
-                                                            ngay</button>
+                                                            ng-click="addToCartCheckoutFromProductDetail()"> {{ $locale == 'vi' ? 'Mua ngay' : 'Buy now' }} </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="product-trustbadge">
-                                            <span class="title-menu">Phương thức thanh toán</span>
+                                            <span class="title-menu">{{ $locale == 'vi' ? 'Phương thức thanh toán' : 'Payment method' }}</span>
                                             <div class="product-trustbadge my-3">
                                                 <ul>
                                                     <li>
@@ -392,10 +402,11 @@
                                                         <img width="32" height="32" class="lazyload"
                                                             src="/site/images/lazy.png?1743048451127"
                                                             data-src="/site/images/policises_1.png?1743048451127"
-                                                            alt="Giao hàng toàn quốc" />
+                                                            alt="{{ $locale == 'vi' ? 'Giao hàng toàn quốc' : 'Nationwide delivery' }}" />
                                                     </div>
                                                     <div class="media-body">
-                                                        Giao hàng toàn quốc
+                                                        {{ $locale == 'vi' ? 'Giao hàng toàn quốc' : 'Nationwide delivery' }}
+
                                                     </div>
                                                 </li>
                                                 <li class="media col-12">
@@ -403,10 +414,10 @@
                                                         <img width="32" height="32" class="lazyload"
                                                             src="/site/images/lazy.png?1743048451127"
                                                             data-src="/site/images/policises_2.png?1743048451127"
-                                                            alt="Tích điểm tất cả sản phẩm" />
+                                                            alt="{{ $locale == 'vi' ? 'Tích điểm tất cả sản phẩm' : 'Loyalty points on all products' }}" />
                                                     </div>
                                                     <div class="media-body">
-                                                        Tích điểm tất cả sản phẩm
+                                                        {{ $locale == 'vi' ? 'Tích điểm tất cả sản phẩm' : 'Loyalty points on all products' }}
                                                     </div>
                                                 </li>
                                                 <li class="media col-12">
@@ -414,10 +425,11 @@
                                                         <img width="32" height="32" class="lazyload"
                                                             src="/site/images/lazy.png?1743048451127"
                                                             data-src="/site/images/policises_3.png?1743048451127"
-                                                            alt="Miễn phí vận chuyển đơn từ 80k" />
+                                                            alt="{{ $locale == 'vi' ? 'Miễn phí vận chuyển đơn từ 80k' : 'Free shipping on orders from ₫80,000' }}" />
                                                     </div>
                                                     <div class="media-body">
-                                                        Miễn phí vận chuyển đơn từ 80k
+
+                                                        {{ $locale == 'vi' ? 'Miễn phí vận chuyển đơn từ 80k' : 'Free shipping on orders from ₫80,000' }}
                                                     </div>
                                                 </li>
                                                 <li class="media col-12">
@@ -425,10 +437,11 @@
                                                         <img width="32" height="32" class="lazyload"
                                                             src="/site/images/lazy.png?1743048451127"
                                                             data-src="/site/images/policises_4.png?1743048451127"
-                                                            alt="Cam kết chính hãng" />
+                                                            alt="{{ $locale == 'vi' ? 'Cam kết chính hãng' : 'Authenticity guaranteed' }}" />
                                                     </div>
                                                     <div class="media-body">
-                                                        Cam kết chính hãng
+
+                                                        {{ $locale == 'vi' ? 'Cam kết chính hãng' : 'Authenticity guaranteed' }}
                                                     </div>
                                                 </li>
                                             </ul>
@@ -436,10 +449,12 @@
                                         <div class="product-hotline">
                                             <img class="img-full" src="/site/images/hotline-product.png?1743048451127"
                                                 alt="" />
-                                            Hotline & Zalo hỗ trợ 24/7:
+                                            {{ $locale == 'vi' ? 'Hotline & Zalo hỗ trợ 24/7:' : 'Hotline & Support 24/7:' }}
+
                                             <a href="tel:{{ str_replace(' ', '', $config->hotline) }}"
                                                 title="{{ $config->hotline }}">{{ $config->hotline }}</a>
-                                            liên hệ để được tư vấn thêm
+
+                                            {{ $locale == 'vi' ? 'liên hệ để được tư vấn thêm' : 'Contact us for more advice' }}
                                         </div>
                                     </div>
                                 </form>
@@ -453,7 +468,10 @@
                     <div class="product-tab e-tabs not-dqtab">
                         <ul class="tabs tabs-title clearfix">
                             <li class="tab-link current" data-tab="tab-1">
-                                <span>Chi tiết sản phẩm</span>
+                                <span>
+                                       {{ $locale == 'vi' ? 'Chi tiết sản phẩm' : 'Detail Product' }}
+
+                                </span>
                             </li>
                             {{-- <li class="tab-link" data-tab="tab-3">
                                 <span>Đánh giá khách hàng</span>
@@ -462,12 +480,17 @@
                         <div class="tab-1 tab-content content_extab current">
                             <div class="rte product_getcontent">
                                 <div class="ba-text-fpt">
-                                    {!! $product->body !!}
+                                    @if($locale == 'vi')
+                                        {!! $product->body !!}
+                                    @else
+                                        {!! $product->body_en !!}
+                                    @endif
+
                                 </div>
                                 <div class="show-more d-none">
                                     <div class="btn btn-default btn--view-more">
-                                        <span class="more-text">Xem thêm <i class="fa fa-chevron-down"></i></span>
-                                        <span class="less-text">Thu gọn <i class="fa fa-chevron-up"></i></span>
+                                        <span class="more-text">{{ $locale == 'vi' ? 'Xem thêm' : 'View more' }} <i class="fa fa-chevron-down"></i></span>
+                                        <span class="less-text">{{ $locale == 'vi' ? 'Thu gọn' : 'Collapse' }} <i class="fa fa-chevron-up"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -484,7 +507,7 @@
                 <div class="productRelate">
                     <div class="block-title">
                         <h2>
-                            <a href="javascript:void(0)" title="Sản phẩm cùng loại">Sản phẩm cùng loại</a>
+                            <a href="javascript:void(0)" title="{{ $locale == 'vi' ? 'Sản phẩm cùng loại' : 'Related products' }}">{{ $locale == 'vi' ? 'Sản phẩm cùng loại' : 'Related products' }} </a>
                         </h2>
                     </div>
                     <div class="margin-am">

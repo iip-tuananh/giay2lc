@@ -11,15 +11,36 @@
                 </div>
             </div>
 
+
+
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group custom-group">
-                    <label class="form-label required-label">Tên danh mục</label>
-                    <input class="form-control " type="text" ng-model="form.name">
-                    <span class="invalid-feedback d-block" role="alert">
-                        <strong><% errors.name[0] %></strong>
-                    </span>
+                    <div class="form-row">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <label class="form-label required-label">Tên danh mục(VI)</label>
+                            <input class="form-control" type="text"
+                                   ng-model="form.name"
+                                   ng-class="{'is-invalid': errors && errors.name}">
+                            <span class="invalid-feedback d-block" role="alert" ng-if="errors && errors.name">
+        <strong><% errors.name[0] %></strong>
+      </span>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="form-label required-label">Name Category(EN)</label>
+                            <input class="form-control" type="text"
+                                   ng-model="form.name_en"
+                                   ng-class="{'is-invalid': errors && errors.name_en}">
+                            <span class="invalid-feedback d-block" role="alert" ng-if="errors && errors.name_en">
+        <strong><% errors.name_en[0] %></strong>
+      </span>
+                        </div>
+                    </div>
                 </div>
+
             </div>
+
+
 
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group custom-group">

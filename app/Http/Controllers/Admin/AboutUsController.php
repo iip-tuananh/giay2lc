@@ -73,16 +73,23 @@ class AboutUsController extends Controller
             [
                 'name' => 'required',
                 'home_title' => 'required',
+                'home_title_en' => 'required',
                 'home_description' => 'required',
+                'home_description_en' => 'required',
                 'home_image' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
                 'home_why_choose_image' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
                 'home_why_choose_title' => 'nullable',
                 'home_why_choose_description' => 'nullable',
                 'description' => 'required',
+                'description_en' => 'required',
                 'content' => 'required',
+                'content_en' => 'required',
                 'mission' => 'required',
+                'mission_en' => 'required',
                 'vision' => 'required',
+                'vision_en' => 'required',
                 'core_values' => 'required',
+                'core_values_en' => 'required',
                 'image' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
                 'image_mission' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
                 'image_vision' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
@@ -120,6 +127,21 @@ class AboutUsController extends Controller
             $object->raw_material_area = $request->raw_material_area;
             $object->home_why_choose_title = $request->home_why_choose_title;
             $object->home_why_choose_description = $request->home_why_choose_description;
+
+
+
+            $object->home_title_en = $request->home_title_en;
+            $object->home_description_en = $request->home_description_en;
+            $object->home_why_choose_title_en = $request->home_why_choose_title_en;
+            $object->home_why_choose_description_en = $request->home_why_choose_description_en;
+            $object->youtube_link_en = $request->youtube_link_en;
+            $object->description_en = $request->description_en;
+            $object->content_en = $request->content_en;
+            $object->mission_en = $request->mission_en;
+            $object->vision_en = $request->vision_en;
+            $object->core_values_en = $request->core_values_en;
+
+
             $object->save();
 
             if ($request->home_image) {

@@ -8,6 +8,7 @@ use App\Model\Admin\Block;
 use App\Model\Admin\Category;
 use App\Model\Admin\CategorySpecial;
 use App\Model\Admin\Product;
+use App\Model\Admin\TagGroup;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -60,26 +61,7 @@ class FrontController extends Controller
             ->where('type', 20)
             ->where('show_home_page', 1)
             ->orderBy('order_number')->get();
-        // $data['categorySpecial'] = CategorySpecial::query()->with([
-        //     'products' => function ($q) {
-        //         $q->with([
-        //             'image',
-        //             'galleries' => function ($q) {
-        //                 $q->select(['id', 'product_id', 'sort'])
-        //                     ->with(['image'])
-        //                     ->orderBy('sort', 'ASC');
-        //             },
-        //         ])->where('status', 1)->inRandomOrder();
-        //     }
-        // ])
-        //     ->has('products')
-        //     ->where('type', 10)
-        //     ->where('show_home_page', 1)
-        //     ->where('order_number', '!=', 1)
-        //     ->orderBy('order_number')->get()->map(function ($query) {
-        //         $query->setRelation('products', $query->products->where('status', 1)->take(12));
-        //         return $query;
-        //     });
+
 
         $data['categorySpecialFlashsale'] = CategorySpecial::query()
             ->has('products')
@@ -101,33 +83,6 @@ class FrontController extends Controller
                 }
             ])
             ->first();
-
-        // $productCategories = Category::query()->with([
-        //     'childs' => function ($q) {
-        //         $q->with([
-        //             'childs'
-        //         ]);
-        //     }
-        // ])
-        // ->where('show_home_page', 1)
-        // ->orderBy('sort_order')
-        // ->get();
-        // foreach ($productCategories as $category) {
-        //     $category_parent_id = $category->parent ? $category->parent->id : null;
-        //     $arr_category_id = array_merge($category->childs->pluck('id')->toArray(), [$category->id, $category_parent_id]);
-        //     if ($category->childs) {
-        //         foreach ($category->childs as $child) {
-        //             $arr_category_id = array_merge($arr_category_id, $child->childs->pluck('id')->toArray());
-        //         }
-        //     }
-        //     $category->products = Product::query()->where('status', 1)->whereIn('cate_id', $arr_category_id)->inRandomOrder()->limit(12)->select(['id', 'name', 'slug', 'price', 'base_price', 'unit_id', 'cate_id'])->get();
-        // }
-        // $data['productCategories'] = $productCategories;
-
-        // $data['vouchers'] = Voucher::query()->where('status', 1)->where('quantity', '>', 0)->where('to_date', '>=', now())->orderBy('created_at', 'desc')->get();
-        // block khối ảnh cuối trang
-        // $block = Block::query()->find(1);
-        // $data['block'] = $block;
 
         $about_us = AboutUs::query()->first();
         $data['about_us'] = $about_us;
@@ -244,6 +199,8 @@ class FrontController extends Controller
         $categories = Category::parent()->with('products')->orderBy('sort_order')->get();
         $category = Category::with(['childs'])->where('slug', $categorySlug)->first();
 
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+
         $attributes = [];
         $sort = $request->get('sort') ?: 'lasted';
         $tag = $request->get('tag') ?: null;
@@ -262,7 +219,7 @@ class FrontController extends Controller
                     $arr_category_id = array_merge($arr_category_id, $child->childs->pluck('id')->toArray());
                 }
             }
-            $attributes = Attribute::query()->with(['tags' => function ($q) use ($arr_category_id) {
+            $groups = TagGroup::query()->with(['tags' => function ($q) use ($arr_category_id) {
                 $q->with(['products' => function ($q) use ($arr_category_id) {
                     $q->where('status', 1)->whereIn('cate_id', $arr_category_id);
                 }]);
@@ -293,14 +250,14 @@ class FrontController extends Controller
                     }
                 })
                 ->where('products.status', 1)->orderBy('products.created_at', 'desc')->paginate(20);
-            $attributes = Attribute::query()->with(['tags' => function ($q) use ($arr_product_ids) {
+            $groups = TagGroup::query()->with(['tags' => function ($q) use ($arr_product_ids) {
                 $q->with(['products' => function ($q) use ($arr_product_ids) {
                     $q->where('products.status', 1)->whereIn('products.id', array_unique($arr_product_ids));
                 }]);
             }])->get();
         }
 
-        $title = $category->name;
+        $title = $locale == 'vi' ? $category->name : $category->name_en;
         $short_des = $category->short_des;
         $title_sub = $category->name;
 
@@ -317,7 +274,7 @@ class FrontController extends Controller
             return view('site.errors');
         }
 
-        return view('site.products.product_category', compact('categories', 'category', 'sort', 'categorySpecial', 'products', 'title', 'short_des', 'title_sub', 'vouchers', 'attributes'));
+        return view('site.products.product_category', compact('categories', 'category', 'sort', 'categorySpecial', 'products', 'title', 'short_des', 'title_sub', 'vouchers', 'groups'));
     }
 
     public function filterProduct(Request $request)
@@ -431,11 +388,13 @@ class FrontController extends Controller
     // Giới thiệu
     public function aboutUs()
     {
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+
         $policies = Policy::query()->where('status', true)->latest()->get();
         $config = Config::query()->get()->first();
         $about_us = AboutUs::query()->first();
-        $content = $about_us->content;
-        $title = 'Về chúng tôi';
+        $content = $locale == 'vi' ? $about_us->content : $about_us->content_en;
+        $title = $locale == 'vi' ? 'Về chúng tôi' : 'About Us';
         $description = $config->web_des;
         return view('site.about_us', compact('content', 'policies', 'title', 'description'));
     }
@@ -456,23 +415,45 @@ class FrontController extends Controller
     {
         $rule  =  [
             'your_name' => 'required',
+            'your_message' => 'required',
             'your_phone'  => 'required|regex:/^(0)[0-9]{9,11}$/',
-            'your_email'  => 'required|email|max:255'
+            'your_email'  => 'nullable|email|max:255'
         ];
+
+        $messages_vi = [
+            'your_name.required'   => 'Vui lòng nhập họ tên',
+            'your_message.required'   => 'Vui lòng nhập nội dung',
+            'your_phone.required'  => 'Vui lòng nhập số điện thoại',
+            'your_phone.regex'     => 'Số điện thoại không đúng định dạng',
+            'your_email.required'  => 'Vui lòng nhập email',
+            'your_email.email'     => 'Email không đúng định dạng',
+            'your_email.max'       => 'Email tối đa 255 ký tự',
+        ];
+
+        $messages_en = [
+            'your_name.required'   => 'Please enter your full name.',
+            'your_phone.required'  => 'Please enter your phone number.',
+            'your_message.required'  => 'Please enter content.',
+            'your_phone.regex'     => 'The phone number format is invalid.',
+            'your_email.required'  => 'Please enter your email address.',
+            'your_email.email'     => 'The email format is invalid.',
+            'your_email.max'       => 'Email must not exceed 255 characters.',
+        ];
+
+        $messages = app()->getLocale() === 'en' ? $messages_en : $messages_vi;
 
         $validate = Validator::make(
             $request->all(),
             $rule,
-            [
-                'your_name.required' => 'Vui lòng nhập họ tên',
-                'your_phone.required' => 'Vui lòng nhập số điện thoại',
-                'your_phone.regex' => 'Số điện thoại không đúng định dạng',
-                'your_email.required' => 'Vui lòng nhập email',
-            ]
+            $messages
         );
 
         if ($validate->fails()) {
-            return $this->responseErrors('Gửi yêu cầu thất bại!', $validate->errors());
+
+            return $this->responseErrors(
+                app()->getLocale() === 'en' ? 'Submit request failed!' : 'Gửi yêu cầu thất bại!',
+                $validate->errors()
+            );
         }
 
         $contact = new Contact();
@@ -483,19 +464,23 @@ class FrontController extends Controller
         $contact->location = $request->your_location ?? null;
         $contact->save();
 
-        return $this->responseSuccess('Gửi yêu cầu thành công!');
+        return $this->responseSuccess(
+            app()->getLocale() === 'en' ? 'Submit request success!' : 'Gửi yêu cầu thành công!',
+            $validate->errors()
+        );
     }
 
     // Blogs
     public function listBlog(Request $request, $slug)
     {
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+
         $category = PostCategory::where('slug', $slug)->first();
         $data['blogs'] = Post::with(['image'])->where(['status' => 1, 'cate_id' => $category->id])
             ->orderBy('id', 'DESC')
-            ->select(['id', 'name', 'intro', 'created_at', 'slug'])
             ->paginate(99999);
 
-        $data['cate_title'] = $category->name;
+        $data['cate_title'] = $locale == 'vi' ? $category->name : $category->name_en;
         $data['categories'] = PostCategory::with([
             'posts' => function ($query) {
                 $query->where(['status' => 1])->get();
@@ -503,7 +488,6 @@ class FrontController extends Controller
         ])->where(['parent_id' => 0, 'show_home_page' => 1])->latest()->get();
         $data['newBlogs'] = Post::with(['image'])->where(['status' => 1])
             ->orderBy('id', 'DESC')
-            ->select(['id', 'name', 'slug', 'created_at'])
             ->limit(6)->get();
 
         $data['productCategories'] = Category::query()->with([
@@ -519,12 +503,14 @@ class FrontController extends Controller
 
     public function indexBlog(Request $request)
     {
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+
         $data['blogs'] = Post::with(['image', 'category'])->where(['status' => 1])
             ->orderBy('id', 'DESC')
-            ->select(['id', 'name', 'intro', 'created_at', 'slug', 'cate_id'])
             ->paginate(6);
 
-        $data['cate_title'] = 'Tin tức';
+        $data['cate_title'] = $locale == 'vi' ?  'Tin tức': 'News';
+
         $data['categories'] = PostCategory::with([
             'posts' => function ($query) {
                 $query->where(['status' => 1])->get();
@@ -532,7 +518,6 @@ class FrontController extends Controller
         ])->where(['parent_id' => 0, 'show_home_page' => 1])->latest()->get();
         $data['newBlogs'] = Post::with(['image'])->where(['status' => 1])
             ->orderBy('id', 'DESC')
-            ->select(['id', 'name', 'slug', 'created_at'])
             ->limit(6)->get();
 
         return view('site.blogs.list', $data);
@@ -540,13 +525,14 @@ class FrontController extends Controller
 
     public function detailBlog(Request $request, $slug)
     {
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+
         $blog = Post::with(['image', 'user_create'])->where('slug', $slug)->first();
         $category = PostCategory::where('id', $blog->cate_id)->first();
         $data['other_blogs'] = Post::with(['image'])->where(['status' => 1, 'cate_id' => $blog->cate_id])
             ->where('id', '!=', $blog->id)
-            ->select(['id', 'name', 'intro', 'created_at', 'slug', 'cate_id'])
             ->limit(16)->inRandomOrder()->get();
-        $data['blog_title'] = $blog->name;
+        $data['blog_title'] = $locale == 'vi' ? $blog->name : $blog->name_en;
         $data['blog_des'] = $blog->intro;
         $data['categories'] = PostCategory::with([
             'posts' => function ($query) {
@@ -555,7 +541,6 @@ class FrontController extends Controller
         ])->where(['parent_id' => 0, 'show_home_page' => 1])->latest()->get();
         $data['newBlogs'] = Post::with(['image'])->where(['status' => 1])
             ->orderBy('id', 'DESC')
-            ->select(['id', 'name', 'slug', 'created_at'])
             ->limit(6)->get();
         $data['blog'] = $blog;
         $data['blog_slug'] = $blog->slug;
@@ -701,17 +686,26 @@ class FrontController extends Controller
         $title = 'Tìm kiếm';
         $short_des = 'Kết quả tìm kiếm';
         $title_sub = 'Tìm thấy ' . count($products) . ' kết quả phù hợp';
-        return view('site.products.product_category', compact('products', 'title', 'short_des', 'title_sub', 'categories', 'vouchers'));
+
+        $groups = TagGroup::query()->with(['tags' => function ($q) {
+            $q->with(['products' => function ($q) {
+                $q->where('status', 1);
+            }]);
+        }])->get();
+
+        return view('site.products.product_category', compact('products', 'title', 'short_des', 'title_sub', 'categories', 'vouchers', 'groups'));
     }
 
     // Chính sách
     public function policyDetail($slug)
     {
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+
         $policy = Policy::where('slug', $slug)->first();
         $policies = Policy::query()->where('status', true)->latest()->get();
-        $title = $policy->title;
-        $content = $policy->content;
-        $description = $policy->title;
+        $title = $locale == 'vi' ? $policy->title : $policy->title_en;
+        $content = $locale == 'vi' ? $policy->content : $policy->content_en;
+        $description = $title;
         return view('site.about_us', compact('content', 'title', 'policies', 'description'));
     }
 }

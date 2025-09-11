@@ -10,7 +10,7 @@ use Vanthao03596\HCVN\Models\Province;
 class Tag extends Model
 {
     protected $table = 'tags';
-    protected $fillable = ['id', 'code', 'name', 'type', 'attribute_id'];
+    protected $fillable = ['id', 'code', 'name', 'name_en', 'type', 'attribute_id', 'group_id'];
     protected $dates = ['created_at', 'updated_at'];
 
     const TYPE_PRODUCT = 10;
@@ -42,6 +42,11 @@ class Tag extends Model
     public function posts()
     {
         return $this->morphedByMany(Post::class, 'tagable');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(TagGroup::class, 'group_id');
     }
 
     public function attribute()

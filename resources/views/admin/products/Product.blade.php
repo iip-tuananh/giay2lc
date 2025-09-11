@@ -226,6 +226,12 @@
                 button_type: this.button_type,
                 gift: this.gift,
                 unit_id: this.unit_id,
+
+
+                name_en: this.name_en,
+                origin_en: this.origin_en,
+                intro_en: this.intro_en,
+                body_en: this.body_en,
             }
 
             data = jsonToFormData(data);

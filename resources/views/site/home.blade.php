@@ -86,6 +86,9 @@
     </style>
 @endsection
 @section('content')
+    @php
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+    @endphp
     <section class="section_slider">
         <div class="container">
             <div class="home-slider swiper-container gallery-top">
@@ -174,21 +177,25 @@
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="about-us-image">
                         <img src="{{ $about_us->home_image ? $about_us->home_image->path : 'https://placehold.co/600x600' }}"
-                            alt="{{ $about_us->home_title }}">
+                            alt="{{ translate($about_us->home_title, $about_us->home_title_en) }}">
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="block-title">
                         <h2>
-                            {{ $about_us->home_title }}
+                            {{ translate($about_us->home_title, $about_us->home_title_en) }}
                         </h2>
                     </div>
                     <div class="about-us-content">
-                        {!! $about_us->home_description !!}
+                        @if($locale == 'vi')
+                            {!! $about_us->home_description !!}
+                        @else
+                            {!! $about_us->home_description_en !!}
+                        @endif
                     </div>
                     <div class="about-us-button">
-                        <a href="{{ route('front.about-us') }}" title="Xem thêm">
-                            Xem chi tiết
+                        <a href="{{ route('front.about-us') }}" title=" {{ $locale == 'vi' ? 'Xem chi tiết' : 'Detail' }} ">
+                          {{ $locale == 'vi' ? 'Xem chi tiết' : 'Detail' }}
                         </a>
                     </div>
                 </div>
@@ -235,8 +242,8 @@
                     <div class="block-title">
                         <h2>
                             <a href="{{ route('front.show-product-category', ['categorySlug' => $categorySpecialFlashsale->slug]) }}"
-                                title="{{ $categorySpecialFlashsale->name }}">
-                                {{ $categorySpecialFlashsale->name }}
+                                title=" {{ translate($categorySpecialFlashsale->name, $categorySpecialFlashsale->name_en) }}">
+                                {{ translate($categorySpecialFlashsale->name, $categorySpecialFlashsale->name_en) }}
                             </a>
                         </h2>
                         {{-- <div class="timer">
@@ -451,7 +458,9 @@
                 <div class="col-xl-12 col-lg-8 col-md-10 col-12">
                     <div class="testimonials">
                         <div class="title block-title">
-                            <h2>Chứng nhận và giải thưởng</h2>
+                            <h2>
+                                {{ $locale == 'vi' ? 'Chứng nhận và giải thưởng' : 'Certifications & Awards' }}
+                            </h2>
                         </div>
                         <div
                             class="testimonial-swiper swiper-container swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
@@ -504,17 +513,27 @@
                 <div class="col-12 col-md-6">
                 </div>
                 <div class="col-12 col-md-6">
-                    <div class="subtitle mt-5">Vì sao chọn chúng tôi</div>
-                    <h1 class="title">{{ $about_us->home_why_choose_title }}</h1>
+                    <div class="subtitle mt-5">
+                        {{ $locale == 'vi' ? 'Vì sao chọn chúng tôi' : 'Why Choose Us' }}
+                    </div>
+                    <h1 class="title">{{ translate($about_us->home_why_choose_title, $about_us->home_why_choose_title_en) }}</h1>
                     <ul class="list-group-none">
                         @foreach ($about_us->why_choose_criterias as $why_choose_criteria)
                             <li>
                                 <img src="{{ $why_choose_criteria->image ? $why_choose_criteria->image->path : 'https://placehold.co/120x120' }}"
                                     alt="Wcu1" loading="lazy">
-                                <div>
-                                    <h3>{{ $why_choose_criteria->title }}</h3>
-                                    <p>{!! $why_choose_criteria->content !!}</p>
-                                </div>
+                                @if($locale == 'vi')
+                                    <div>
+                                        <h3>{{ $why_choose_criteria->title }}</h3>
+                                        <p>{!! $why_choose_criteria->content !!}</p>
+                                    </div>
+                                @else
+                                    <div>
+                                        <h3>{{ $why_choose_criteria->title_en }}</h3>
+                                        <p>{!! $why_choose_criteria->content_en !!}</p>
+                                    </div>
+                                @endif
+
                             </li>
                         @endforeach
                     </ul>
@@ -601,7 +620,7 @@
             <div class="container">
                 <div class="block-title">
                     <h2>
-                        <a href="javascript:void(0)" title="{{ $postCategory->name }}">{{ $postCategory->name }}</a>
+                        <a href="javascript:void(0)" title="{{ translate($postCategory->name, $postCategory->name_en) }}">{{ translate($postCategory->name, $postCategory->name_en) }}</a>
                     </h2>
                 </div>
                 <div class="block-blog relative">
@@ -612,10 +631,10 @@
                                     <div class="item-blog">
                                         <div class="block-thumb">
                                             <a class="thumb" href="{{ route('front.detail-blog', $post->slug) }}"
-                                                title="{{ $post->name }}">
+                                                title="{{ translate($post->name, $post->name_en) }}">
                                                 <img class="lazyload d-block" src="/site/images/lazy.png"
                                                     data-src="{{ $post->image ? $post->image->path : 'https://placehold.co/350x350' }}"
-                                                    alt="{{ $post->name }}">
+                                                    alt="{{ translate($post->name, $post->name_en) }}">
                                             </a>
                                             {{-- <div class="time-post badge">
                                                 {{ date('d/m/Y', strtotime($post->created_at)) }}
@@ -623,20 +642,23 @@
                                         </div>
                                         <div class="block-content">
                                             <h3><a href="{{ route('front.detail-blog', $post->slug) }}"
-                                                    title="{{ $post->name }}">{{ $post->name }}</a>
+                                                    title="{{ translate($post->name, $post->name_en) }}">{{ translate($post->name, $post->name_en) }}</a>
                                             </h3>
                                             <div class="article-content">
-                                                {!! $post->intro !!}
+                                                @if($locale == 'vi')
+                                                    {!! $post->intro !!}
+                                                @else
+                                                    {!! $post->intro_en !!}
+                                                @endif
+
                                             </div>
                                             <div class="article-meta">
                                                 <div class="article-date">
-                                                    <time>{{ date('d', strtotime($post->created_at)) }} Tháng
-                                                        {{ date('m', strtotime($post->created_at)) }},
-                                                        {{ date('Y', strtotime($post->created_at)) }}</time>
+                                                    <time>{{\Illuminate\Support\Carbon::parse($post->created_at)->format('d/m/Y')}}</time>
                                                 </div>
                                                 <a class="article-seemore"
                                                     href="{{ route('front.detail-blog', $post->slug) }}"
-                                                    title="{{ $post->name }}">Xem thêm <i
+                                                    title="#">{{ $locale == 'vi' ? 'Xem thêm' : 'Detail' }} <i
                                                         class="fa fa-angle-double-right" aria-hidden="true"></i></a>
                                             </div>
                                         </div>
@@ -694,7 +716,7 @@
                 <div class="col-xl-3 col-lg-3 col-12">
                     <div class="block-title">
                         <h2>
-                            Đối tác của chúng tôi
+                          {{ $locale == 'vi' ? 'Đối tác của chúng tôi' : 'Our Partners' }}
                         </h2>
                     </div>
                 </div>

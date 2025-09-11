@@ -57,6 +57,7 @@ class ConfigController extends Controller
 			$request->all(),
 			[
 				'web_title' => 'required|max:255',
+				'web_title_en' => 'required|max:255',
 				'hotline' => 'required',
 				'zalo' => 'required',
 				'emails' => 'required',
@@ -116,6 +117,18 @@ class ConfigController extends Controller
             $object->revenue_percent_2 = $request->revenue_percent_2;
             $object->revenue_percent_1 = $request->revenue_percent_1;
             $object->text_top_header = $request->text_top_header;
+
+
+
+            $object->web_title_en = $request->web_title_en;
+            $object->short_name_company_en = $request->short_name_company_en;
+            $object->address_company_en = $request->address_company_en;
+            $object->meta_title_en = $request->meta_title_en;
+            $object->address_center_insurance_en = $request->address_center_insurance_en;
+            $object->text_top_header_en = $request->text_top_header_en;
+            $object->web_des_en = $request->web_des_en;
+
+
 
 			$object->save();
 

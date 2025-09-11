@@ -25,6 +25,7 @@ class ProductStoreRequest extends BaseRequest
         $rules = [
             'type' => 'required|in:0,1',
             'name' => 'required|unique:products,name',
+            'name_en' => 'required|unique:products,name_en',
             // 'cate_id' => 'required_if:type,0|exists:categories,id',
             'manufacturer_id' => 'nullable|exists:manufacturers,id',
             'origin_id' => 'nullable|exists:origins,id',

@@ -24,9 +24,12 @@
         get submit_data() {
             let data = {
                 name: this.name,
+                name_en: this.name_en,
                 cate_id: this.cate_id,
                 intro: this.intro,
+                intro_en: this.intro_en,
                 body: this.body,
+                body_en: this.body_en,
                 status: this.status
             }
 

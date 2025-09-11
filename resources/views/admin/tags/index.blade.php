@@ -48,25 +48,47 @@
                             </div>
 
                             <div class="form-group custom-group">
-                                <label class="form-label required-label">Tên</label>
-                                <input class="form-control" type="text" ng-model="editing.name"
-                                    ng-class="{'is-invalid': errors && errors.name}">
-                                <span class="invalid-feedback d-block" role="alert" ng-if="errors && errors.name">
-                                    <strong><% errors.name[0] %></strong>
-                                </span>
+                                <div class="form-row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label class="form-label required-label">Tên (VI)</label>
+                                        <input class="form-control" type="text"
+                                               ng-model="editing.name"
+                                               ng-class="{'is-invalid': errors && errors.name}">
+                                        <span class="invalid-feedback d-block" role="alert" ng-if="errors && errors.name">
+        <strong><% errors.name[0] %></strong>
+      </span>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label class="form-label required-label">Name (EN)</label>
+                                        <input class="form-control" type="text"
+                                               ng-model="editing.name_en"
+                                               ng-class="{'is-invalid': errors && errors.name_en}">
+                                        <span class="invalid-feedback d-block" role="alert" ng-if="errors && errors.name_en">
+        <strong><% errors.name_en[0] %></strong>
+      </span>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-group custom-group">
-                                <label class="form-label required-label">Thuộc tính sản phẩm</label>
-                                <select select2 class="select2-in-modal form-control" ng-model="editing.attribute_id">
-                                    <option value="">Chọn thuộc tính</option>
-                                    <option ng-repeat="attribute in attributes track by $index" value="<% attribute.id %>"
-                                        ng-selected="editing.attribute_id == attribute.id"><% attribute.name %></option>
-                                </select>
-                                <span class="invalid-feedback d-block" role="alert" ng-if="errors && errors.attribute_id">
-                                    <strong><% errors.attribute_id[0] %></strong>
-                                </span>
+                                <label class="form-label required-label">Nhóm thẻ</label>
+                                <ui-select remove-selected="false" ng-model="editing.group_id" theme="select2">
+                                    <ui-select-match placeholder="Chọn nhóm">
+                                        <% $select.selected.name %>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in (groups | filter: $select.search)">
+                                        <div>
+                                            <span ng-bind="item.name"></span>
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span class="invalid-feedback d-block" role="alert">
+                        <strong><% errors.group_id[0] %></strong>
+                    </span>
                             </div>
+
+
 
                             <div class="form-group custom-group">
                                 <label class="form-label required-label">Loại</label>
@@ -114,27 +136,44 @@
                                 </span>
                             </div>
 
-                            <div class="form-group custom-group">
-                                <label class="form-label required-label">Tên</label>
-                                <input class="form-control" type="text" name="name"
-                                    ng-class="{'is-invalid': errors && errors.name}">
-                                <span class="invalid-feedback d-block" role="alert" ng-if="errors && errors.name">
-                                    <strong><% errors.name[0] %></strong>
-                                </span>
-                            </div>
 
                             <div class="form-group custom-group">
-                                <label class="form-label required-label">Thuộc tính sản phẩm</label>
-                                <select class="select2-in-modal form-control" name="attribute_id">
-                                    <option value="">Chọn thuộc tính</option>
-                                    @foreach ($attributes as $attribute)
-                                        <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
+                                <div class="form-row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <label class="form-label required-label">Tên (VI)</label>
+                                        <input class="form-control" type="text"
+                                               name="name"
+                                               ng-class="{'is-invalid': errors && errors.name}">
+                                        <span class="invalid-feedback d-block" role="alert" ng-if="errors && errors.name">
+        <strong><% errors.name[0] %></strong>
+      </span>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label class="form-label required-label">Name (EN)</label>
+                                        <input class="form-control" type="text"
+                                               name="name_en"
+                                               ng-class="{'is-invalid': errors && errors.name_en}">
+                                        <span class="invalid-feedback d-block" role="alert" ng-if="errors && errors.name_en">
+        <strong><% errors.name_en[0] %></strong>
+      </span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Nhóm thẻ</label>
+                                <select class="select2-in-modal form-control" name="group_id">
+                                    <option value="">Chọn nhóm</option>
+                                    @foreach ($groups as $group)
+                                        <option value="{{ $group->id }}">{{ $group->name }}</option>
                                     @endforeach
-                                    {{-- <option value="20">Bài viết </option> --}}
                                 </select>
                                 <span class="invalid-feedback d-block" role="alert"
-                                    ng-if="errors && errors.attribute_id">
-                                    <strong><% errors.attribute_id[0] %></strong>
+                                    ng-if="errors && errors.group_id">
+                                    <strong><% errors.group_id[0] %></strong>
                                 </span>
                             </div>
 
@@ -197,8 +236,8 @@
                     title: "Tên thẻ"
                 },
                 {
-                    data: 'attribute',
-                    title: "Thuộc tính sản phẩm"
+                    data: 'group',
+                    title: "Nhóm thẻ"
                 },
                 {
                     data: 'type',
@@ -225,6 +264,8 @@
 
         app.controller('tags', function($scope, $http) {
             $scope.attributes = @json($attributes);
+            $scope.groups = @json($groups);
+
             $('#table-list').on('click', '.edit', function() {
                 $scope.tag = table.row($(this).parents('tr')).data();
                 $.ajax({
@@ -253,7 +294,7 @@
                 var data = $scope.editing;
                 console.log(data);
                 $scope.loading = true;
-                $scope.$apply();
+
                 $.ajax({
                     url: url,
                     type: 'PUT',
@@ -264,8 +305,9 @@
                     success: function(response) {
                         if (response.success) {
                             $('#editModal').modal('hide');
-                            document.getElementById("editForm").reset();
-                            table.draw();
+
+                            table.ajax.reload();
+
                             toastr.success(response.message);
                         } else {
                             $scope.errors = response.errors;

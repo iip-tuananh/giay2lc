@@ -16,8 +16,8 @@ function awe_lazyloadImage() {
 var wDWs = $(window).width();
 
 
-var placeholderText = ['Tìm kiếm sản phẩm ......'];
-$('.search-auto').placeholderTypewriter({text: placeholderText});
+// var placeholderText = ['Tìm kiếm sản phẩm ......'];
+// $('.search-auto').placeholderTypewriter({text: placeholderText});
 
 
 

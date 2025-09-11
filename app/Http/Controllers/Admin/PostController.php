@@ -88,6 +88,7 @@ class PostController extends Controller
 			[
 				'cate_id' => 'required|exists:post_categories,id',
 				'name' => 'required|unique:posts,name',
+				'name_en' => 'required|unique:posts,name_en',
 				'status' => 'required|in:0,1',
 				// 'intro' => 'nullable|max:255',
 				'body' => 'required',
@@ -108,8 +109,11 @@ class PostController extends Controller
 			$object = new ThisModel();
 			$object->cate_id = $request->cate_id;
 			$object->name = $request->name;
+			$object->name_en = $request->name_en;
 			$object->intro = $request->intro;
+			$object->intro_en = $request->intro_en;
 			$object->body = $request->body;
+			$object->body_en = $request->body_en;
 			$object->status = $request->status;
 			$object->save();
 
@@ -150,6 +154,7 @@ class PostController extends Controller
 			[
 				'cate_id' => 'required|exists:post_categories,id',
 				'name' => 'required|unique:posts,name,'.$id,
+				'name_en' => 'required|unique:posts,name_en,'.$id,
 				'status' => 'required|in:0,1',
 				// 'intro' => 'nullable|max:255',
 				'body' => 'required',
@@ -173,8 +178,11 @@ class PostController extends Controller
 
 			$object->cate_id = $request->cate_id;
 			$object->name = $request->name;
+			$object->name_en = $request->name_en;
 			$object->intro = $request->intro;
+			$object->intro_en = $request->intro_en;
 			$object->body = $request->body;
+			$object->body_en = $request->body_en;
 			$object->status = $request->status;
 			$object->save();
 

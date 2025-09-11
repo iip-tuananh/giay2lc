@@ -111,6 +111,7 @@ class PostCategoryController extends Controller
 			[
 				'parent_id' => 'nullable',
 				'name' => 'required|max:255',
+				'name_en' => 'required|max:255',
 				'intro' => 'nullable',
 				'image' => 'nullable|file|mimes:jpg,jpeg,png|max:3000'
 
@@ -150,7 +151,9 @@ class PostCategoryController extends Controller
 				$object->sort_order = 0;
 			}
 			$object->name = $request->name;
+			$object->name_en = $request->name_en;
 			$object->intro = $request->intro;
+			$object->intro_en = $request->intro_en;
 
 			$object->save();
 
@@ -200,6 +203,7 @@ class PostCategoryController extends Controller
 			[
 				'parent_id' => 'nullable',
 				'name' => 'required|max:255',
+				'name_en' => 'required|max:255',
 				'intro' => 'nullable',
 				'image' => 'nullable|file|mimes:jpg,jpeg,png|max:3000'
 
@@ -239,7 +243,9 @@ class PostCategoryController extends Controller
 				$object->sort_order = 0;
 			}
 			$object->name = $request->name;
+			$object->name_en = $request->name_en;
 			$object->intro = $request->intro;
+			$object->intro_en = $request->intro_en;
 
 			$object->save();
 

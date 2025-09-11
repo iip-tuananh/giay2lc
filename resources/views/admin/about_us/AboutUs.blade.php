@@ -141,6 +141,19 @@
                 home_why_choose_title: this.home_why_choose_title,
                 home_why_choose_description: this.home_why_choose_description,
                 why_choose_criterias: this.why_choose_criterias.map(c => c.submit_data),
+
+                home_title_en: this.home_title_en,
+                home_description_en: this.home_description_en,
+                home_why_choose_title_en: this.home_why_choose_title_en,
+                home_why_choose_description_en: this.home_why_choose_description_en,
+                youtube_link_en: this.youtube_link_en,
+                content_en: this.content_en,
+                description_en: this.description_en,
+                mission_en: this.mission_en,
+                vision_en: this.vision_en,
+                core_values_en: this.core_values_en,
+
+
             }
             data = jsonToFormData(data);
             let image = this.image.submit_data;

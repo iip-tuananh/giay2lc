@@ -24,12 +24,16 @@
 @endsection
 
 @section('content')
+    @php
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+    @endphp
+
     <section class="bread-crumb">
         <div class="container">
             <ul class="breadcrumb">
                 <li class="home">
-                    <a href="{{ route('front.home-page') }}" title="Trang chủ">
-                        <span>Trang chủ</span>
+                    <a href="{{ route('front.home-page') }}" title="{{ __('menu.home') }}">
+                        <span>{{ __('menu.home') }}</span>
                     </a>
                 </li>
                 <li>
@@ -50,10 +54,10 @@
                                 <div class="item-blog">
                                     <div class="block-thumb">
                                         <a class="thumb" href="{{ route('front.detail-blog', $blog->slug) }}"
-                                            title="{{ $blog->name }}">
+                                            title="{{ translate($blog->name, $blog->name_en) }}">
                                             <img class="lazyload"
                                                 src="/site/images/lazy.png"
-                                                data-src="{{ $blog->image ? $blog->image->path : 'https://placehold.co/600x400' }}" alt="{{ $blog->name }}">
+                                                data-src="{{ $blog->image ? $blog->image->path : 'https://placehold.co/600x400' }}" alt="{{ translate($blog->name, $blog->name_en) }}">
                                         </a>
                                         <div class="time-post badge">
                                             {{ $blog->created_at->format('d/m/Y') }}
@@ -61,9 +65,14 @@
                                     </div>
                                     <div class="block-content">
                                         <h3><a href="{{ route('front.detail-blog', $blog->slug) }}"
-                                                title="{{ $blog->name }}">{{ $blog->name }}</a></h3>
+                                                title="{{ translate($blog->name, $blog->name_en) }}">{{ translate($blog->name, $blog->name_en) }}</a></h3>
                                         <div class="article-content">
-                                            {!! $blog->intro !!}
+                                            @if($locale == 'vi')
+                                                {!! $blog->intro !!}
+                                            @else
+                                                {!! $blog->intro_en !!}
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>

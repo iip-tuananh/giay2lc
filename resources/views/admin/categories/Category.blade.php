@@ -56,6 +56,12 @@
                 icon: this.icon,
                 show_home_page: this.show_home_page,
                 link: this.link,
+
+                name_en: this.name_en,
+                link_en: this.link_en,
+                short_des_en: this.short_des_en,
+                intro_en: this.intro_en,
+
             }
             data = jsonToFormData(data);
             let image = this.image.submit_data;

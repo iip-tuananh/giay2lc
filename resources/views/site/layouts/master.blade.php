@@ -317,6 +317,10 @@
 </head>
 
 <body ng-app="App" ng-controller="AppController" ng-cloak>
+    @php
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+    @endphp
+
     <div class="opacity_menu"></div>
     @include('site.partials.header')
     <div class="bg-home">
@@ -337,7 +341,7 @@
                             d="m322.820312 387.933594 279.949219-307.273438 36.957031 33.671875-314.339843 345.023438-171.363281-162.902344 34.453124-36.238281zm297.492188-178.867188-38.988281 42.929688c5.660156 21.734375 8.675781 44.523437 8.675781 68.003906 0 148.875-121.125 270-270 270s-270-121.125-270-270 121.125-270 270-270c68.96875 0 131.96875 26.007812 179.746094 68.710938l33.707031-37.113282c-58.761719-52.738281-133.886719-81.597656-213.453125-81.597656-85.472656 0-165.835938 33.285156-226.273438 93.726562-60.441406 60.4375-93.726562 140.800782-93.726562 226.273438s33.285156 165.835938 93.726562 226.273438c60.4375 60.441406 140.800782 93.726562 226.273438 93.726562s165.835938-33.285156 226.273438-93.726562c60.441406-60.4375 93.726562-140.800782 93.726562-226.273438 0-38.46875-6.761719-75.890625-19.6875-110.933594zm0 0">
                         </path>
                     </svg>
-                    Mua hàng thành công
+                    {{ $locale == 'vi'? 'Mua hàng thành công' : 'Buy Success' }}
                 </span>
             </div>
             <div class="media-content bodycart-mobile">
@@ -345,14 +349,26 @@
                     <img ng-src="<% noti_product.product_image %>" alt="<% noti_product.product_name %>">
                 </div>
                 <div class="body_content">
-                    <h4 class="product-title"><% noti_product.product_name %></h4>
+                    @if($locale == 'vi')
+                        <h4 class="product-title"><% noti_product.product_name %></h4>
+
+                    @else
+                        <h4 class="product-title"><% noti_product.product_name_en %></h4>
+
+                    @endif
                     <div class="product-new-price">
                         <b><% noti_product.product_price | number %>₫</b>
                     </div>
                 </div>
             </div>
-            <a class="noti-cart-count" href="javascript:void(0)" title="Giỏ hàng"> Giỏ hàng của bạn hiện có <span
-                    class="count_item_pr"><% cart.count %></span> sản phẩm </a>
+            @if($locale == 'vi')
+                <a class="noti-cart-count" href="javascript:void(0)" title="Giỏ hàng"> Giỏ hàng của bạn hiện có <span
+                        class="count_item_pr"><% cart.count %></span> sản phẩm </a>
+            @else
+                <a class="noti-cart-count" href="javascript:void(0)" title="Giỏ hàng"> Your Cart Has <span
+                        class="count_item_pr"><% cart.count %></span> Items </a>
+            @endif
+
             <a title="Đóng" class="cart_btn-close iconclose">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                     x="0px" y="0px" viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512.001 512.001;"
@@ -367,12 +383,22 @@
                 </svg>
             </a>
             <div class="bottom-action">
-                <div class="cart_btn-close tocontinued">
-                    Tiếp tục mua hàng
-                </div>
-                <a href="{{ route('cart.checkout') }}" class="checkout">
-                    Thanh toán ngay
-                </a>
+                @if($locale == 'vi')
+                    <div class="cart_btn-close tocontinued">
+                        Tiếp tục mua hàng
+                    </div>
+                    <a href="{{ route('cart.checkout') }}" class="checkout">
+                        Thanh toán ngay
+                    </a>
+                @else
+                    <div class="cart_btn-close tocontinued">
+                        Continue Shopping
+                    </div>
+                    <a href="{{ route('cart.checkout') }}" class="checkout">
+                        Pay Now
+                    </a>
+                @endif
+
             </div>
         </div>
     </div>

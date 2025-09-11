@@ -30,6 +30,12 @@ if (!function_exists('array_find_index')) {
     }
 }
 
+if (!function_exists('translate')) {
+    function translate($vi, $en) {
+        return app()->getLocale() === 'vi' ? $vi : $en;
+    }
+}
+
 if (!function_exists('formatDate')) {
     function formatDate($date) {
         return \Carbon\Carbon::parse($date)->format('d/m/Y H:i');

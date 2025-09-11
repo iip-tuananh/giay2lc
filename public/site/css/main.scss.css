@@ -349,7 +349,8 @@ button.close {
 
 #header .header-control .ul-control .header-lang {
     position: relative;
-    margin-right: 10px
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 #header .header-control .ul-control .header-lang a.ae-icon {

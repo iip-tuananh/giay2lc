@@ -38,16 +38,17 @@ Route::group(['namespace' => 'Front'], function () {
         });
     });
 
-    Route::get('/','FrontController@homePage')->name('front.home-page');
-    Route::get('/san-pham/{productSlug}.html','FrontController@showProductDetail')->name('front.show-product-detail');
-    // Route::get('/load-product-home-page','FrontController@loadProductHomePage')->name('front.load-product-home-page');
-    Route::get('/danh-muc/{categorySlug}.html','FrontController@showProductCategory')->name('front.show-product-category');
-    Route::get('/load-more/product','FrontController@loadMoreProduct')->name('front.product-load-more');
-    Route::get('/get-product-quick-view','FrontController@getProductQuickView')->name('front.get-product-quick-view');
-    Route::get('/filter-product','FrontController@filterProduct')->name('front.filter-product');
-    
-    // giỏ hàng
-    // Route::middleware('auth:client')->group(function () {
+    Route::group(['prefix' => LaravelLocalization::setLocale(),  'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ] ], function () {
+        Route::get('/','FrontController@homePage')->name('front.home-page');
+        Route::get('/san-pham/{productSlug}.html','FrontController@showProductDetail')->name('front.show-product-detail');
+        // Route::get('/load-product-home-page','FrontController@loadProductHomePage')->name('front.load-product-home-page');
+        Route::get('/danh-muc/{categorySlug}.html','FrontController@showProductCategory')->name('front.show-product-category');
+        Route::get('/load-more/product','FrontController@loadMoreProduct')->name('front.product-load-more');
+        Route::get('/get-product-quick-view','FrontController@getProductQuickView')->name('front.get-product-quick-view');
+        Route::get('/filter-product','FrontController@filterProduct')->name('front.filter-product');
+
+        // giỏ hàng
+        // Route::middleware('auth:client')->group(function () {
         Route::post('/{productId}/add-product-to-cart','CartController@addItem')->name('cart.add.item');
         Route::get('/remove-product-to-cart','CartController@removeItem')->name('cart.remove.item');
         Route::get('/gio-hang.html','CartController@index')->name('cart.index');
@@ -56,35 +57,39 @@ Route::group(['namespace' => 'Front'], function () {
         Route::post('/checkout','CartController@checkoutSubmit')->name('cart.submit.order');
         Route::get('/dat-hang-thanh-cong.html','CartController@checkoutSuccess')->name('cart.checkout.success');
         Route::post('/apply-voucher','CartController@applyVoucher')->name('cart.apply.voucher');
-    // });
+        // });
 
-    // Liên hệ
-    Route::get('/dang-ky-cong-tac-vien.html','FrontController@connectUs')->name('front.connect-us');
-    Route::get('/lien-he.html','FrontController@contactUs')->name('front.contact-us');
-    Route::post('/lien-he','FrontController@postContact')->name('front.post-contact');
+        // Liên hệ
+        Route::get('/dang-ky-cong-tac-vien.html','FrontController@connectUs')->name('front.connect-us');
+        Route::get('/lien-he.html','FrontController@contactUs')->name('front.contact-us');
+        Route::post('/lien-he','FrontController@postContact')->name('front.post-contact');
 
-    // Blogs
-    Route::get('/gioi-thieu.html','FrontController@aboutUs')->name('front.about-us');
-    Route::get('/tin-tuc.html','FrontController@indexBlog')->name('front.index-blog');
-    Route::get('/tin-tuc/{slug}.html','FrontController@listBlog')->name('front.list-blog');
-    Route::get('/chi-tiet-tin-tuc/{slug}.html','FrontController@detailBlog')->name('front.detail-blog');
+        // Blogs
+        Route::get('/gioi-thieu.html','FrontController@aboutUs')->name('front.about-us');
+        Route::get('/tin-tuc.html','FrontController@indexBlog')->name('front.index-blog');
+        Route::get('/tin-tuc/{slug}.html','FrontController@listBlog')->name('front.list-blog');
+        Route::get('/chi-tiet-tin-tuc/{slug}.html','FrontController@detailBlog')->name('front.detail-blog');
 
-    // Chính sách
-    Route::get('/chinh-sach/{slug}.html','FrontController@policyDetail')->name('front.policy-detail');
+        // Chính sách
+        Route::get('/chinh-sach/{slug}.html','FrontController@policyDetail')->name('front.policy-detail');
 
-    // Tìm kiếm
-    Route::post('/auto-search-complete','FrontController@autoSearchComplete')->name('front.auto-search-complete');
-    Route::get('/search','FrontController@search')->name('front.search');
+        // Tìm kiếm
+        Route::post('/auto-search-complete','FrontController@autoSearchComplete')->name('front.auto-search-complete');
+        Route::get('/search','FrontController@search')->name('front.search');
 
 
-    // reset data
-    Route::get('/reset-data','FrontController@resetData')->name('front.resetData');
+        // reset data
+        Route::get('/reset-data','FrontController@resetData')->name('front.resetData');
 
-    // laster buy products
-    Route::get('/laster-buy-products','FrontController@lasterBuyProducts')->name('front.laster-buy-products');
+        // laster buy products
+        Route::get('/laster-buy-products','FrontController@lasterBuyProducts')->name('front.laster-buy-products');
 
-    // review
-    Route::post('/review/submit','FrontController@submitReview')->name('front.submit-review');
+        // review
+        Route::post('/review/submit','FrontController@submitReview')->name('front.submit-review');
+    });
+
+
+
 
 });
 

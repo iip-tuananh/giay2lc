@@ -144,7 +144,16 @@ class ProductController extends Controller
             $object->button_type = $request->button_type ?? 0;
             $object->gift = $request->gift;
             $object->unit_id = $request->unit_id;
-			$object->save();
+
+
+
+            $object->name_en = $request->name_en;
+            $object->origin_en = $request->origin_en;
+            $object->intro_en = $request->intro_en;
+            $object->body_en = $request->body_en;
+
+
+            $object->save();
 
 			// FileHelper::uploadFile($request->image, 'products', $object->id, ThisModel::class, 'image',99);
             FileHelper::uploadFileToCloudflare($request->image, $object->id, ThisModel::class, 'image');
@@ -229,6 +238,12 @@ class ProductController extends Controller
             $object->button_type = $request->button_type ?? 0;
             $object->gift = $request->gift;
             $object->unit_id = $request->unit_id;
+
+            $object->name_en = $request->name_en;
+            $object->origin_en = $request->origin_en;
+            $object->intro_en = $request->intro_en;
+            $object->body_en = $request->body_en;
+
 			$object->save();
 
 			if($request->image) {

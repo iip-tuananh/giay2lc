@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Model\Admin\Tag;
+use App\Model\Admin\Tagable;
+use App\Model\Admin\TagGroup;
+use Couchbase\Group;
 use Illuminate\Http\Request;
 use App\Model\Admin\Tag as ThisModel;
 use Illuminate\Support\Facades\Response;
@@ -23,7 +26,9 @@ class TagController extends Controller
     public function index()
     {
         $attributes = Attribute::getForSelect();
-        return view($this->view . '.index', compact('attributes'));
+        $groups = TagGroup::getForSelect();
+
+        return view($this->view . '.index', compact('attributes', 'groups'));
     }
 
     public function searchData(Request $request)
@@ -33,8 +38,8 @@ class TagController extends Controller
             ->editColumn('updated_at', function ($object) {
                 return formatDate($object->updated_at);
             })
-            ->editColumn('attribute', function ($object) {
-                return $object->attribute ? $object->attribute->name : '';
+            ->editColumn('group', function ($object) {
+                return $object->group ? $object->group->name : '';
             })
             ->editColumn('type', function ($object) {
                 return Tag::TYPES[$object->type];
@@ -55,6 +60,8 @@ class TagController extends Controller
             $request->all(),
             [
                 'name' => 'required',
+                'name_en' => 'required',
+                'group_id' => 'required',
                 'type' => 'required|in:10,20',
                 'code' => 'required|unique:tags,code',
             ]
@@ -107,6 +114,8 @@ class TagController extends Controller
             $request->all(),
             [
                 'name' => 'required',
+                'name_en' => 'required',
+                'group_id' => 'required',
                 'type' => 'required|in:10,20',
                 'code' => 'required|unique:tags,code,'.$id.',id',
             ]
@@ -147,7 +156,9 @@ class TagController extends Controller
                 "alert-type" => "warning"
             );
         } else {
+            Tagable::query()->where('tag_id', $id)->delete();
             $object->delete();
+
             $message = array(
                 "message" => "Thao tác thành công!",
                 "alert-type" => "success"

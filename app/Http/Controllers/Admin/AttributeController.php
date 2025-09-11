@@ -66,6 +66,7 @@ class AttributeController extends Controller
             $request->all(),
             [
                 'name' => 'required|max:255',
+                'name_en' => 'required|max:255',
             ]
         );
         $json = new stdClass();
@@ -82,6 +83,8 @@ class AttributeController extends Controller
             $object = new ThisModel();
 
             $object->name = $request->name;
+            $object->name_en = $request->name_en;
+
             $object->save();
 
             DB::commit();
@@ -110,6 +113,7 @@ class AttributeController extends Controller
             $request->all(),
             [
                 'name' => 'required|max:255',
+                'name_en' => 'required|max:255',
             ]
         );
         $json = new stdClass();
@@ -125,6 +129,7 @@ class AttributeController extends Controller
         try {
             $object = ThisModel::findOrFail($id);
             $object->name = $request->name;
+            $object->name_en = $request->name_en;
 
             $object->save();
 

@@ -80,6 +80,7 @@ class CategoryController extends Controller
 			[
 				'parent_id' => 'nullable|exists:categories,id',
 				'name' => 'required|max:255',
+				'name_en' => 'required|max:255',
 				'short_des' => 'nullable',
 				'intro' => 'nullable',
 				'image' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:3000',
@@ -126,7 +127,14 @@ class CategoryController extends Controller
 			$object->short_des = $request->short_des;
 			$object->show_home_page = $request->show_home_page ?? 0;
 			$object->link = $request->link;
-			$object->save();
+
+            $object->name_en = $request->name_en;
+            $object->link_en = $request->link_en;
+            $object->short_des_en = $request->short_des_en;
+            $object->intro_en = $request->intro_en;
+
+
+            $object->save();
 
 			// Cập nhật lại stt các danh mục có stt lớn hơn
 			if($request->parent_id) {
@@ -178,6 +186,7 @@ class CategoryController extends Controller
 			$request->all(),
 			[
 				'parent_id' => 'nullable',
+				'name_en' => 'required|max:255',
 				'name' => 'required|max:255',
 				'short_des' => 'nullable',
 				'intro' => 'nullable',
@@ -233,7 +242,13 @@ class CategoryController extends Controller
             $object->icon = $request->icon;
 			$object->show_home_page = $request->show_home_page ?? 0;
 			$object->link = $request->link;
-			$object->save();
+
+            $object->name_en = $request->name_en;
+            $object->link_en = $request->link_en;
+            $object->short_des_en = $request->short_des_en;
+            $object->intro_en = $request->intro_en;
+
+            $object->save();
 
 			// Cập nhật lại stt các danh mục có stt lớn hơn
 			if($request->parent_id) {

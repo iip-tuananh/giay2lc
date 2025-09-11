@@ -6,16 +6,74 @@
             </div> --}}
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label class="form-label">Tiêu đề</label>
-                            <input type="text" class="form-control" ng-model="form.title">
+                    <div class="col-md-8" ng-init="activeLang='vi'">
+                        <div class="card shadow-lg border-0">
+                            <div class="card-header bg-white border-0 pb-0">
+                                <div class="segmented-tabs" role="tablist" aria-label="Ngôn ngữ">
+                                    <button type="button"
+                                            class="seg-btn"
+                                            ng-class="{'active': activeLang==='vi'}"
+                                            ng-click="activeLang='vi'"
+                                            aria-selected="<% activeLang==='vi' %>">
+                                        Tiếng Việt
+                                    </button>
+                                    <button type="button"
+                                            class="seg-btn"
+                                            ng-class="{'active': activeLang==='en'}"
+                                            ng-click="activeLang='en'"
+                                            aria-selected="<% activeLang==='en' %>">
+                                        English
+                                    </button>
+                                </div>
+                            </div>
 
-                            <span class="invalid-feedback d-block" role="alert">
+                            <div class="card-body pt-0">
+                                <!-- TAB: VIETNAMESE -->
+                                <div ng-show="activeLang==='vi'">
+                                    <div class="form-group">
+                                        <label class="form-label">Tiêu đề</label>
+                                        <input type="text" class="form-control" ng-model="form.title">
+
+                                        <span class="invalid-feedback d-block" role="alert">
 				        <strong><% errors.title[0] %></strong>
 			        </span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Nội dung</label>
+                                        <textarea class="form-control ck-editor" ck-editor rows="5" ng-model="form.content"></textarea>
+                                        <span class="invalid-feedback d-block" role="alert">
+				                <strong><% errors.content[0] %></strong>
+                            </span>
+                                    </div>
+                                </div>
+
+                                <div ng-show="activeLang==='en'">
+                                    <div class="form-group">
+                                        <label class="form-label">Tiêu đề (EN)</label>
+                                        <input type="text" class="form-control" ng-model="form.title_en">
+
+                                        <span class="invalid-feedback d-block" role="alert">
+				        <strong><% errors.title_en[0] %></strong>
+			        </span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Nội dung (EN)</label>
+                                        <textarea class="form-control ck-editor" ck-editor rows="5" ng-model="form.content_en"></textarea>
+                                        <span class="invalid-feedback d-block" role="alert">
+				                <strong><% errors.content_en[0] %></strong>
+                            </span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+
+
+
                     </div>
+
 
                     <div class="col-md-4">
                         <div class="form-group">
@@ -31,15 +89,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label class="form-label">Nội dung</label>
-                            <textarea class="form-control ck-editor" ck-editor rows="5" ng-model="form.content"></textarea>
-                            <span class="invalid-feedback d-block" role="alert">
-				                <strong><% errors.content[0] %></strong>
-                            </span>
-                        </div>
-                    </div>
+
 
                 </div>
             </div>

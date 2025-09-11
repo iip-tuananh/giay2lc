@@ -1,16 +1,20 @@
+@php
+    $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+@endphp
 <footer class="footer">
     <div class="mid-footer">
         <div class="container">
             <div class="row">
                 <div class="col-xl-3 col-lg-3 col-md-6 col-12 link-list">
                     <h4 class="title-menu">
-                        Thông tin công ty
+                        {{ $locale == 'vi' ? 'Thông tin công ty' : 'Information' }}
+
                     </h4>
                     <div class="des-footer">
-                        {{ $config->web_des }}
+                        {{ translate($config->web_des, $config->web_des_en) }}
                     </div>
                     <h4 class="title-menu">
-                        Theo dõi chúng tôi
+                        {{ $locale == 'vi' ? 'Theo dõi chúng tôi' : 'Follow us' }}
                     </h4>
                     <div class="list-social">
                         <a href="{{ $config->facebook }}" class="social-button" title="Facebook">
@@ -32,24 +36,24 @@
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-6 col-12 link-list col-footer">
                     <h4 class="title-menu">
-                        Về chúng tôi
+                        {{ $locale == 'vi' ? 'Về chúng tôi' : 'About Us' }}
                         <span class="Collapsible__Plus"></span>
                     </h4>
                     <div class="hidden-mobile">
                         <div class="d-flex" style="gap: 20%;">
                             <ul class="list-menu">
-                                <li><a href="{{ route('front.home-page') }}" title="Trang chủ">Trang chủ</a></li>
-                                <li><a href="{{ route('front.about-us') }}" title="Giới thiệu">Giới thiệu</a></li>
+                                <li><a href="{{ route('front.home-page') }}" title=" {{ __('menu.home') }}"> {{ __('menu.home') }}</a></li>
+                                <li><a href="{{ route('front.about-us') }}" title="  {{ __('menu.about') }}">  {{ __('menu.about') }}</a></li>
                                 @foreach ($post_categories as $postCategory)
                                     <li><a href="{{ route('front.list-blog', $postCategory->slug) }}"
-                                            title="{{ $postCategory->name }}">{{ $postCategory->name }}</a></li>
+                                            title="{{ translate($postCategory->name, $postCategory->name_en) }}">{{ translate($postCategory->name, $postCategory->name_en) }}</a></li>
                                 @endforeach
-                                <li><a href="{{ route('front.contact-us') }}" title="Liên hệ">Liên hệ</a></li>
+                                <li><a href="{{ route('front.contact-us') }}" title=" {{ __('menu.contact') }}"> {{ __('menu.contact') }}</a></li>
                             </ul>
                             <ul class="list-menu">
                                 @foreach ($product_categories as $category)
                                     <li><a href="{{ route('front.show-product-category', $category->slug) }}"
-                                            title="{{ $category->name }}">{{ $category->name }}</a></li>
+                                            title="{{ translate($category->name, $category->name_en) }}">{{ translate($category->name, $category->name_en) }}</a></li>
                                 @endforeach
                             </ul>
                         </div>
@@ -57,21 +61,22 @@
                 </div>
                 <div class="col-xl-2 col-lg-3 col-md-6 col-12 link-list col-footer">
                     <h4 class="title-menu">
-                        Hỗ trợ khách hàng
+                        {{ $locale == 'vi' ? 'Hỗ trợ khách hàng' : 'Support' }}
                         <span class="Collapsible__Plus"></span>
                     </h4>
                     <div class="list-menu hidden-mobile">
                         <ul class="list-menu">
                             @foreach ($policies as $policy)
                                 <li><a href="{{ route('front.policy-detail', $policy->slug) }}"
-                                        title="{{ $policy->title }}">{{ $policy->title }}</a></li>
+                                        title="{{ translate($policy->title, $policy->title_en) }}">{{ translate($policy->title, $policy->title_en) }}</a></li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-3 col-md-6 col-12 link-list">
                     <h4 class="title-menu">
-                        Thông tin liên hệ
+
+                        {{ $locale == 'vi' ? 'Thông tin liên hệ' : 'Contact' }}
                     </h4>
                     <div class="list-menu">
                         <div class="group-address">
@@ -83,7 +88,7 @@
                                             d="M6.46532 0.686035C3.26765 0.686035 0.651367 3.30231 0.651367 6.49999C0.651367 8.08776 2.2 10.9476 2.27636 11.0877C2.27881 11.0922 2.28058 11.0952 2.28318 11.0996L5.87299 17.1867C6.06347 17.5097 6.52849 17.5159 6.72747 17.198L10.4732 11.2154C10.4757 11.2113 10.4773 11.2088 10.4799 11.2049C10.562 11.0807 12.3374 8.37556 12.3374 6.55813C12.3374 3.30231 9.72113 0.686035 6.46532 0.686035ZM6.46532 9.69766C4.60486 9.69766 3.09323 8.18603 3.09323 6.32557C3.09323 4.4651 4.60486 2.95348 6.46532 2.95348C8.32579 2.95348 9.83741 4.4651 9.83741 6.32557C9.77927 8.24417 8.32579 9.69766 6.46532 9.69766Z"
                                             stroke="var(--mainColor)" stroke-width="1.25" stroke-miterlimit="10"></path>
                                     </svg>
-                                    <span>{{ $config->address_company }}</span>
+                                    <span>{{ translate($config->address_company, $config->address_company_en) }}</span>
                                 </li>
                                 <li>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -130,7 +135,7 @@
     <div id="copyright" class="copyright">
         <div class="container">
             <div class="wsp">
-                © Bản quyền thuộc về {{ $config->web_title }}
+                © {{ $locale == 'vi' ? 'Bản quyền thuộc về' : 'Copyright' }} {{ translate($config->web_title, $config->web_title_en) }}
             </div>
         </div>
     </div>

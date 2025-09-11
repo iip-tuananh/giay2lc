@@ -1,185 +1,215 @@
 <div class="card">
 	<div class="card-body">
 		<div class="row">
-			<div class="col-md-8 col-xs-12">
-				<div class="form-group custom-group">
-					<label class="form-label required-label">Tiêu đề website</label>
-					<input class="form-control" ng-model="form.web_title" type="text">
-					<span class="invalid-feedback d-block" role="alert">
+			<div class="col-md-8 col-xs-12" ng-init="activeLang='vi'">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-white border-0 pb-0">
+                        <div class="segmented-tabs" role="tablist" aria-label="Ngôn ngữ">
+                            <button type="button"
+                                    class="seg-btn"
+                                    ng-class="{'active': activeLang==='vi'}"
+                                    ng-click="activeLang='vi'"
+                                    aria-selected="<% activeLang==='vi' %>">
+                                Tiếng Việt
+                            </button>
+                            <button type="button"
+                                    class="seg-btn"
+                                    ng-class="{'active': activeLang==='en'}"
+                                    ng-click="activeLang='en'"
+                                    aria-selected="<% activeLang==='en' %>">
+                                English
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body pt-0">
+                        <!-- TAB: VIETNAMESE -->
+                        <div ng-show="activeLang==='vi'">
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Tiêu đề website</label>
+                                <input class="form-control" ng-model="form.web_title" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
 						<strong><% errors.web_title[0] %></strong>
 					</span>
-				</div>
-                <div class="form-group custom-group">
-                    <label class="form-label">Tên công ty viết gọn</label>
-                    <input class="form-control" ng-model="form.short_name_company" type="text">
-                    <span class="invalid-feedback d-block" role="alert">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label">Tên công ty viết gọn</label>
+                                <input class="form-control" ng-model="form.short_name_company" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
 						<strong><% errors.web_title[0] %></strong>
 					</span>
-                </div>
-				<div class="form-group custom-group">
-					<label class="form-label required-label">Số hotline</label>
-					<input class="form-control" ng-model="form.hotline" type="text">
-					<span class="invalid-feedback d-block" role="alert">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Số hotline</label>
+                                <input class="form-control" ng-model="form.hotline" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
 						<strong><% errors.hotline[0] %></strong>
 					</span>
-				</div>
-                <div class="form-group custom-group">
-                    <label class="form-label">Số tổng đài</label>
-                    <input class="form-control" ng-model="form.phone_switchboard" type="text">
-                </div>
-                <div>
-                    <label class="form-label">Thêm zalo chat (có thể thêm nhiều zalo chat) <span class="text-success cursor-pointer" ng-click="form.addZaloChat()">( + )</span></label>
-                    <div class="row" ng-repeat="(index, zalo) in form.zalo_chat">
-                        <div class="col-md-5">
+                            </div>
                             <div class="form-group custom-group">
-                                <label class="form-label required-label">Tiêu đề</label>
-                                <input class="form-control" ng-model="zalo.title" type="text">
-                                <span class="invalid-feedback d-block" role="alert">
+                                <label class="form-label">Số tổng đài</label>
+                                <input class="form-control" ng-model="form.phone_switchboard" type="text">
+                            </div>
+                            <div>
+                                <label class="form-label">Thêm zalo chat (có thể thêm nhiều zalo chat) <span class="text-success cursor-pointer" ng-click="form.addZaloChat()">( + )</span></label>
+                                <div class="row" ng-repeat="(index, zalo) in form.zalo_chat">
+                                    <div class="col-md-5">
+                                        <div class="form-group custom-group">
+                                            <label class="form-label required-label">Tiêu đề</label>
+                                            <input class="form-control" ng-model="zalo.title" type="text">
+                                            <span class="invalid-feedback d-block" role="alert">
                                     <strong><% errors['zalo_chat.' + index + '.title'][0] %></strong>
                                 </span>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="form-group custom-group">
-                                <label class="form-label required-label">Số Zalo</label>
-                                <input class="form-control" ng-model="zalo.phone" type="text">
-                                <span class="invalid-feedback d-block" role="alert">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group custom-group">
+                                            <label class="form-label required-label">Số Zalo</label>
+                                            <input class="form-control" ng-model="zalo.phone" type="text">
+                                            <span class="invalid-feedback d-block" role="alert">
                                     <strong><% errors['zalo_chat.' + index + '.phone'][0] %></strong>
                                 </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-sm btn-danger" ng-click="form.removeZaloChat($index)" style="height: 36px;" ng-if="$index > 0">Xóa</button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-sm btn-danger" ng-click="form.removeZaloChat($index)" style="height: 36px;" ng-if="$index > 0">Xóa</button>
-                        </div>
-                    </div>
-                </div>
-				<div class="form-group custom-group">
-					<label class="form-label required-label">Zalo doanh nghiệp</label>
-                    <input class="form-control" ng-model="form.zalo" type="text">
-                    <span class="invalid-feedback d-block" role="alert">
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Zalo doanh nghiệp</label>
+                                <input class="form-control" ng-model="form.zalo" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
                         <strong><% errors.zalo[0] %></strong>
                     </span>
-				</div>
-                <div class="form-group custom-group">
-                    <label class="form-label">Địa chỉ công ty</label>
-                    <input class="form-control" ng-model="form.address_company" type="text">
-                </div>
-                <div class="form-group custom-group">
-                    <label class="form-label">Địa chỉ sản xuất</label>
-                    <input class="form-control" ng-model="form.address_center_insurance" type="text">
-                </div>
-                <div class="form-group custom-group">
-                    <label class="form-label">Mã số thuế</label>
-                    <input class="form-control" ng-model="form.tax_code" type="text">
-                </div>
-				<div class="form-group custom-group">
-					<label class="form-label required-label">Email (nhập nhiều email cách nhau bởi dấu xuống dòng)</label>
-					<textarea class="form-control" ng-model="form.email" rows="3"></textarea>
-					<span class="invalid-feedback d-block" role="alert">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label">Địa chỉ công ty</label>
+                                <input class="form-control" ng-model="form.address_company" type="text">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label">Địa chỉ sản xuất</label>
+                                <input class="form-control" ng-model="form.address_center_insurance" type="text">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label">Mã số thuế</label>
+                                <input class="form-control" ng-model="form.tax_code" type="text">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Email (nhập nhiều email cách nhau bởi dấu xuống dòng)</label>
+                                <textarea class="form-control" ng-model="form.email" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
 						<strong><% errors.email[0] %></strong>
 					</span>
-				</div>
-				<div class="form-group custom-group">
-					<label class="form-label required-label">Fanpage Facebook</label>
-					<input class="form-control" ng-model="form.facebook" type="text">
-					<span class="invalid-feedback d-block" role="alert">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Fanpage Facebook</label>
+                                <input class="form-control" ng-model="form.facebook" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
 						<strong><% errors.facebook[0] %></strong>
 					</span>
-				</div>
-                <div class="form-group custom-group">
-                    <label class="form-label">Shopee</label>
-                    <input class="form-control" ng-model="form.twitter" type="text">
-                </div>
-                <div class="form-group custom-group">
-                    <label class="form-label">Tiktok</label>
-                    <input class="form-control" ng-model="form.instagram" type="text">
-                </div>
-                <div class="form-group custom-group">
-                    <label class="form-label">Youtube</label>
-                    <input class="form-control" ng-model="form.youtube" type="text">
-                </div>
-				<div class="form-group custom-group">
-					<label class="form-label">Link map</label>
-					<input class="form-control" ng-model="form.location" type="text">
-					<span class="invalid-feedback d-block" role="alert">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label">Shopee</label>
+                                <input class="form-control" ng-model="form.twitter" type="text">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label">Tiktok</label>
+                                <input class="form-control" ng-model="form.instagram" type="text">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label">Youtube</label>
+                                <input class="form-control" ng-model="form.youtube" type="text">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label">Link map</label>
+                                <input class="form-control" ng-model="form.location" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
 						<strong><% errors.location[0] %></strong>
 					</span>
-				</div>
-                <div class="form-group custom-group">
-					<label class="form-label required-label">Cấu hình chữ chạy top header (mỗi dòng cách nhau bởi dấu xuống dòng)</label>
-					<textarea id="my-textarea" class="form-control" ng-model="form.text_top_header" rows="3"></textarea>
-					<span class="invalid-feedback d-block" role="alert">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Cấu hình chữ chạy top header (mỗi dòng cách nhau bởi dấu xuống dòng)</label>
+                                <textarea id="my-textarea" class="form-control" ng-model="form.text_top_header" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
 						<strong><% errors.text_top_header[0] %></strong>
 					</span>
-				</div>
-				{{-- <div class="form-group">
-					<label class="form-label">Cấu hình phần trăm hoa hồng hệ thống (VD: Người mua hàng nhận lại 5% tổng giá trị đơn hàng, điểm được tích lũy 1 điểm = 1000đ)</label>
-                    <div class="row"> --}}
-                        {{-- <div class="col-md-2">
+                            </div>
                             <div class="form-group custom-group">
-                                <label class="form-label">Người mua hàng (%)</label>
-                                <input class="form-control" ng-model="form.revenue_percent_5" type="text">
+                                <label class="form-label required-label">Meta title</label>
+                                <textarea id="my-textarea" class="form-control" ng-model="form.meta_title" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
+						<strong><% errors.meta_title[0] %></strong>
+					</span>
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Mô tả web</label>
+                                <textarea id="my-textarea" class="form-control" ng-model="form.web_des" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
+						<strong><% errors.web_des[0] %></strong>
+					</span>
                             </div>
                         </div>
-                        <div class="col-md-2">
+
+                        <div ng-show="activeLang==='en'">
                             <div class="form-group custom-group">
-                                <label class="form-label">Cấp 4 (%)</label>
-                                <input class="form-control" ng-model="form.revenue_percent_4" type="text">
+                                <label class="form-label required-label">Tiêu đề website (EN)</label>
+                                <input class="form-control" ng-model="form.web_title_en" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
+						<strong><% errors.web_title_en[0] %></strong>
+					</span>
                             </div>
-                        </div>
-                        <div class="col-md-2">
                             <div class="form-group custom-group">
-                                <label class="form-label">Cấp 3 (%)</label>
-                                <input class="form-control" ng-model="form.revenue_percent_3" type="text">
+                                <label class="form-label">Tên công ty viết gọn (EN)</label>
+                                <input class="form-control" ng-model="form.short_name_company_en" type="text">
+                                <span class="invalid-feedback d-block" role="alert">
+						<strong><% errors.short_name_company_en[0] %></strong>
+					</span>
                             </div>
-                        </div>
-                        <div class="col-md-2">
+
+
                             <div class="form-group custom-group">
-                                <label class="form-label">Cấp 2 (%)</label>
-                                <input class="form-control" ng-model="form.revenue_percent_2" type="text">
+                                <label class="form-label">Địa chỉ công ty (EN)</label>
+                                <input class="form-control" ng-model="form.address_company_en" type="text">
                             </div>
-                        </div> --}}
-                        {{-- <div class="col-md-2">
                             <div class="form-group custom-group">
-                                <label class="form-label">Phần trăm (%)</label>
-                                <input class="form-control" ng-model="form.revenue_percent_1" type="text">
+                                <label class="form-label">Địa chỉ sản xuất (EN)</label>
+                                <input class="form-control" ng-model="form.address_center_insurance_en" type="text">
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label">Mã số thuế (EN)</label>
+                                <input class="form-control" ng-model="form.tax_code" type="text" disabled>
+                            </div>
+
+
+
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Cấu hình chữ chạy top header (mỗi dòng cách nhau bởi dấu xuống dòng) (EN)</label>
+                                <textarea id="my-textarea" class="form-control" ng-model="form.text_top_header_en" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
+						<strong><% errors.text_top_header_en[0] %></strong>
+					</span>
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Meta title (EN)</label>
+                                <textarea id="my-textarea" class="form-control" ng-model="form.meta_title_en" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
+						<strong><% errors.meta_title_en[0] %></strong>
+					</span>
+                            </div>
+                            <div class="form-group custom-group">
+                                <label class="form-label required-label">Mô tả web (EN)</label>
+                                <textarea id="my-textarea" class="form-control" ng-model="form.web_des_en" rows="3"></textarea>
+                                <span class="invalid-feedback d-block" role="alert">
+						<strong><% errors.web_des_en[0] %></strong>
+					</span>
                             </div>
                         </div>
                     </div>
-				</div> --}}
-				{{-- <div class="form-group">
-					<label class="form-label">Tùy chọn khác</label>
-					<div class="custom-control custom-checkbox">
-						<input id="call" class="custom-control-input" type="checkbox" ng-model="form.click_call" ng-true-value="1" ng-false-value="0">
-						<label for="call" class="custom-control-label">Click call</label>
-					</div>
-					<div class="custom-control custom-checkbox">
-						<input id="face-chat" class="custom-control-input" type="checkbox" ng-model="form.facebook_chat"  ng-true-value="1" ng-false-value="0">
-						<label for="face-chat" class="custom-control-label">Chatbox Facebook</label>
-					</div>
-					<div class="custom-control custom-checkbox">
-						<input id="zalo-chat" class="custom-control-input" type="checkbox" ng-model="form.zalo_chat"  ng-true-value="1" ng-false-value="0">
-						<label for="zalo-chat" class="custom-control-label">Zalo chat</label>
-					</div>
-				</div> --}}
-				<div class="form-group custom-group">
-					<label class="form-label required-label">Meta title</label>
-					<textarea id="my-textarea" class="form-control" ng-model="form.meta_title" rows="3"></textarea>
-					<span class="invalid-feedback d-block" role="alert">
-						<strong><% errors.meta_title[0] %></strong>
-					</span>
-				</div>
-				<div class="form-group custom-group">
-					<label class="form-label required-label">Mô tả web</label>
-					<textarea id="my-textarea" class="form-control" ng-model="form.web_des" rows="3"></textarea>
-					<span class="invalid-feedback d-block" role="alert">
-						<strong><% errors.web_des[0] %></strong>
-					</span>
-				</div>
-                {{-- <div class="form-group custom-group">
-                    <label class="form-label">Bài viết giới thiệu</label>
-                    <textarea class="form-control ck-editor" ck-editor rows="5" ng-model="form.introduction"></textarea>
-                </div> --}}
+                </div>
+
+
+
 			</div>
 			<div class="col-md-4 col-xs-12">
 				<div class="form-group text-center mb-4">

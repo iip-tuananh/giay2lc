@@ -35,22 +35,7 @@
     }
 </style>
 <div class="row">
-    <div class="col-sm-8">
-        {{-- <div class="form-group mb-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <input class="cursor-pointer" type="radio" ng-model="form.type" value="0" id="type_0"> <label for="type_0" class="cursor-pointer">Sản phẩm thông thường</label>
-                </div>
-                <div class="col-md-6">
-                    <input class="cursor-pointer" type="radio" ng-model="form.type" value="1" id="type_1"> <label for="type_1" class="cursor-pointer">Sản phẩm affiliate</label>
-                </div>
-            </div>
-            <span class="invalid-feedback d-block" role="alert">
-                <strong>
-                    <% errors.type[0] %>
-                </strong>
-            </span>
-        </div> --}}
+    <div class="col-sm-8" ng-init="activeLang='vi'">
         <div class="form-group custom-group mb-4">
             <label class="form-label" ng-class="{'required-label': form.type == 0}">Danh mục sản phẩm</label>
             <ui-select class="" remove-selected="true" ng-model="form.cate_id" theme="select2" ng-change="changeCategory(form.cate_id)">
@@ -68,142 +53,117 @@
             </span>
         </div>
 
-        <div class="form-group custom-group mb-4">
-            <label class="form-label required-label">Tên hàng hóa</label>
-            <input class="form-control " type="text" ng-model="form.name">
-            <span class="invalid-feedback d-block" role="alert">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-white border-0 pb-0">
+                <div class="segmented-tabs" role="tablist" aria-label="Ngôn ngữ">
+                    <button type="button"
+                            class="seg-btn"
+                            ng-class="{'active': activeLang==='vi'}"
+                            ng-click="activeLang='vi'"
+                            aria-selected="<% activeLang==='vi' %>">
+                        Tiếng Việt
+                    </button>
+                    <button type="button"
+                            class="seg-btn"
+                            ng-class="{'active': activeLang==='en'}"
+                            ng-click="activeLang='en'"
+                            aria-selected="<% activeLang==='en' %>">
+                        English
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-body pt-0">
+                <div ng-show="activeLang==='vi'">
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label required-label">Tên hàng hóa</label>
+                        <input class="form-control " type="text" ng-model="form.name">
+                        <span class="invalid-feedback d-block" role="alert">
                 <strong>
                     <% errors.name[0] %>
                 </strong>
             </span>
-        </div>
-
-        <div class="form-group custom-group mb-4">
-            <label class="form-label">Mô tả ngắn</label>
-            <textarea class="form-control ck-editor" ck-editor rows="5" ng-model="form.intro"></textarea>
-            <span class="invalid-feedback d-block" role="alert">
-                <strong>
-                    <% errors.intro[0] %>
-                </strong>
-            </span>
-        </div>
-
-        <div class="form-group custom-group mb-4">
-            <label class="form-label">Chi tiết sản phẩm</label>
-            <textarea class="form-control ck-editor" ck-editor rows="5" ng-model="form.body"></textarea>
-            <span class="invalid-feedback d-block" role="alert">
-                <strong>
-                    <% errors.body[0] %>
-                </strong>
-            </span>
-        </div>
-        {{-- <div class="form-group">
-            <label class="form-label">Cấu hình phần trăm hoa hồng sản phẩm</label>
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="form-group custom-group">
-                        <label class="form-label">Người mua hàng (%)</label>
-                        <input class="form-control" ng-model="form.revenue_percent_5" type="text" ng-change="form.updateRevenuePrice()">
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>
-                                <% errors.revenue_percent_5[0] %>
-                            </strong>
-                        </span>
                     </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group custom-group">
-                        <label class="form-label">Cấp 4 (%)</label>
-                        <input class="form-control" ng-model="form.revenue_percent_4" type="text">
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Nguồn gốc</label>
+                        <input class="form-control " type="text" ng-model="form.origin">
                         <span class="invalid-feedback d-block" role="alert">
-                            <strong>
-                                <% errors.revenue_percent_4[0] %>
-                            </strong>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group custom-group">
-                        <label class="form-label">Cấp 3 (%)</label>
-                        <input class="form-control" ng-model="form.revenue_percent_3" type="text">
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>
-                                <% errors.revenue_percent_3[0] %>
-                            </strong>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group custom-group">
-                        <label class="form-label">Cấp 2 (%)</label>
-                        <input class="form-control" ng-model="form.revenue_percent_2" type="text">
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>
-                                <% errors.revenue_percent_2[0] %>
-                            </strong>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group custom-group">
-                        <label class="form-label">Cấp 1 (%)</label>
-                        <input class="form-control" ng-model="form.revenue_percent_1" type="text">
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>
-                                <% errors.revenue_percent_1[0] %>
-                            </strong>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group custom-group mb-4">
-            <label class="form-label" ng-class="{'required-label': form.type == 1}">Link gốc sản phẩm</label>
-            <input class="form-control " type="text" ng-model="form.origin_link">
-            <span class="invalid-feedback d-block" role="alert">
-                <strong>
-                    <% errors.origin_link[0] %>
-                </strong>
-            </span>
-        </div>
-        <div class="form-group custom-group mb-4">
-            <label class="form-label" ng-class="{'required-label': form.type == 1}">Link affiliate</label>
-            <input class="form-control " type="text" ng-model="form.aff_link">
-            <span class="invalid-feedback d-block" role="alert">
-                <strong>
-                    <% errors.aff_link[0] %>
-                </strong>
-            </span>
-        </div>
-        <div class="form-group custom-group mb-4">
-            <label class="form-label" ng-class="{'required-label': form.type == 1}">Link rút gọn</label>
-            <input class="form-control " type="text" ng-model="form.short_link">
-            <span class="invalid-feedback d-block" role="alert">
-                <strong>
-                    <% errors.short_link[0] %>
-                </strong>
-            </span>
-        </div> --}}
-    </div>
-    <div class="col-sm-4">
-        {{-- <div class="form-group custom-group mb-4">
-            <label class="form-label" ng-class="{'required-label': form.type == 0}">Người phụ trách (email)</label>
-            <input class="form-control " type="text" ng-model="form.person_in_charge">
-            <span class="invalid-feedback d-block" role="alert">
-                <strong>
-                    <% errors.person_in_charge[0] %>
-                </strong>
-            </span>
-        </div> --}}
-        <div class="form-group custom-group mb-4">
-            <label class="form-label">Nguồn gốc</label>
-            <input class="form-control " type="text" ng-model="form.origin">
-            <span class="invalid-feedback d-block" role="alert">
                 <strong>
                     <% errors.origin[0] %>
                 </strong>
             </span>
+                    </div>
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Mô tả ngắn</label>
+                        <textarea class="form-control ck-editor" ck-editor rows="5" ng-model="form.intro"></textarea>
+                        <span class="invalid-feedback d-block" role="alert">
+                <strong>
+                    <% errors.intro[0] %>
+                </strong>
+            </span>
+                    </div>
+
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Chi tiết sản phẩm</label>
+                        <textarea class="form-control ck-editor" ck-editor rows="5" ng-model="form.body"></textarea>
+                        <span class="invalid-feedback d-block" role="alert">
+                <strong>
+                    <% errors.body[0] %>
+                </strong>
+            </span>
+                    </div>
+                </div>
+
+                <div ng-show="activeLang==='en'">
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label required-label">Product Name (EN)</label>
+                        <input class="form-control " type="text" ng-model="form.name_en">
+                        <span class="invalid-feedback d-block" role="alert">
+                <strong>
+                    <% errors.name_en[0] %>
+                </strong>
+            </span>
+                    </div>
+
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Origin (EN)</label>
+                        <input class="form-control " type="text" ng-model="form.origin_en">
+                        <span class="invalid-feedback d-block" role="alert">
+                <strong>
+                    <% errors.origin_en[0] %>
+                </strong>
+            </span>
+                    </div>
+
+
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Short Description (EN)</label>
+                        <textarea class="form-control ck-editor" ck-editor rows="5" ng-model="form.intro_en"></textarea>
+                        <span class="invalid-feedback d-block" role="alert">
+                <strong>
+                    <% errors.intro_en[0] %>
+                </strong>
+            </span>
+                    </div>
+
+                    <div class="form-group custom-group mb-4">
+                        <label class="form-label">Description (EN)</label>
+                        <textarea class="form-control ck-editor" ck-editor rows="5" ng-model="form.body_en"></textarea>
+                        <span class="invalid-feedback d-block" role="alert">
+                <strong>
+                    <% errors.body_en[0] %>
+                </strong>
+            </span>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+
+    </div>
+    <div class="col-sm-4">
+
         <div class="form-group custom-group mb-4">
             <label class="form-label">Giá trước giảm</label>
             <input class="form-control " type="text" ng-model="form.base_price">
@@ -222,15 +182,16 @@
                 </strong>
             </span>
         </div>
-        <div class="form-group custom-group mb-4">
-            <label class="form-label">Đơn vị tính</label>
-            <select class="form-control" select2 style="width: 100%;" name="status" ng-model="form.unit_id">
-                <option value="">Chọn đơn vị tính</option>
-                <option value="1" ng-repeat="unit in form.all_units" ng-value="unit.id" ng-selected="form.unit_id == unit.id">
-                    <% unit.name %>
-                </option>
-            </select>
-        </div>
+
+{{--        <div class="form-group custom-group mb-4">--}}
+{{--            <label class="form-label">Đơn vị tính</label>--}}
+{{--            <select class="form-control" select2 style="width: 100%;" name="status" ng-model="form.unit_id">--}}
+{{--                <option value="">Chọn đơn vị tính</option>--}}
+{{--                <option value="1" ng-repeat="unit in form.all_units" ng-value="unit.id" ng-selected="form.unit_id == unit.id">--}}
+{{--                    <% unit.name %>--}}
+{{--                </option>--}}
+{{--            </select>--}}
+{{--        </div>--}}
         {{-- <div class="form-group custom-group mb-4">
             <label class="form-label">Hoa hồng (người mua hàng có thể nhận) / sản phẩm</label>
             <input class="form-control " type="text" ng-model="form.revenue_price" disabled>
@@ -241,34 +202,6 @@
             </span>
         </div> --}}
 
-        <div class="col-md-12">
-            <div class="form-group">
-                <label>Phân loại sản phẩm <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Dành cho các sản phẩm có nhiều loại (phân loại, màu sắc, kích thước ...)"></i></label>
-                <button class="btn btn-info btn-sm float-right" ng-click="form.addAttribute()">
-                    <i class="fa fa-plus"></i> Thêm
-                </button>
-                <div class="d-flex mt-2" ng-repeat="attribute in form.attribute_values track by $index">
-                    <div class="form-group">
-                        <ui-select class="" remove-selected="true" ng-model="attribute.attribute_id" theme="select2">
-                            <ui-select-match placeholder="Chọn phân loại">
-                                <% $select.selected.name %>
-                            </ui-select-match>
-                            <ui-select-choices repeat="t.id as t in (attributes | filter: $select.search)">
-                                <span ng-bind="t.name"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" ng-model="attribute.value" placeholder="Giá trị">
-                    </div>
-                    <div>
-                        <button class="btn btn-danger btn-sm p-2" ng-click="form.removeAttribute($index)">
-                            <i class="fa fa-times"></i> Xóa
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="form-group custom-group mb-4">
             <label class="form-label">Chọn tags</label>
             <ui-select remove-selected="false" multiple ng-model="form.tag_ids">

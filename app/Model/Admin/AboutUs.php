@@ -93,8 +93,7 @@ class AboutUs extends Model
                     ->orderBy('sort', 'ASC');
             },
             'why_choose_criterias' => function ($q) {
-                $q->select(['id', 'about_us_id', 'sort', 'title', 'content'])
-                    ->with(['image'])
+                $q->with(['image'])
                     ->orderBy('sort', 'ASC');
             },
         ])->where('id', $id)
@@ -181,6 +180,9 @@ class AboutUs extends Model
                 $why_choose_criteria->sort = $i;
                 $why_choose_criteria->title = $g['title'];
                 $why_choose_criteria->content = $g['content'];
+                $why_choose_criteria->title_en = $g['title_en'];
+                $why_choose_criteria->content_en = $g['content_en'];
+
                 $why_choose_criteria->save();
 
                 if (isset($g['image'])) {

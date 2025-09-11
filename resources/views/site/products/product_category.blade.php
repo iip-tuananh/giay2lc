@@ -16,13 +16,17 @@
 @endsection
 
 @section('content')
+    @php
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+    @endphp
+
     <div class="layout-collection" ng-controller="ProductCategoryController">
         <section class="bread-crumb">
             <div class="container">
                 <ul class="breadcrumb">
                     <li class="home">
-                        <a href="{{ route('front.home-page') }}" title="Trang chủ">
-                            <span>Trang chủ</span>
+                        <a href="{{ route('front.home-page') }}" title="{{ __('menu.home') }}">
+                            <span>{{ __('menu.home') }}</span>
                         </a>
                     </li>
                     <li>
@@ -55,7 +59,7 @@
                                 <div class="clearfix"></div>
                                 <aside class="aside-item filter-tag-style-2 tag-size">
                                     <div class="aside-title">
-                                        Danh mục sản phẩm
+                                       {{ $locale == 'vi' ? 'Danh mục sản phẩm' : 'Categories' }}
                                         <span class="nd-svg collapsible-plus">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"
                                                 viewBox="0 0 10 5" fill="none">
@@ -72,18 +76,18 @@
                                                     <a href="{{ route('front.show-product-category', ['categorySlug' => $cate->slug]) }}"
                                                         style="text-decoration: none; color: #333333;"
                                                         class="{{ Route::currentRouteName() == 'front.show-product-category' && $cate->slug == $category->slug ? 'active' : '' }}">
-                                                        {{ $cate->name }}
+                                                        {{ translate($cate->name, $cate->name_en) }}
                                                     </a>
                                                 </li>
                                             @endforeach
                                         </ul>
                                     </div>
                                 </aside>
-                                @foreach ($attributes as $attribute)
-                                    @if ($attribute->tags->count() > 0)
+                                @foreach ($groups as $group)
+                                    @if ($group->tags->count() > 0)
                                         <aside class="aside-item filter-tag-style-2 tag-size">
                                             <div class="aside-title">
-                                                {{ $attribute->name }}
+                                                {{ translate($group->name, $group->name_en) }}
                                                 <span class="nd-svg collapsible-plus">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"
                                                         viewBox="0 0 10 5" fill="none">
@@ -95,16 +99,16 @@
                                             </div>
                                             <div class="aside-content filter-group">
                                                 <ul>
-                                                    @foreach ($attribute->tags as $tag)
+                                                    @foreach ($group->tags as $tag)
                                                         <li class="filter-item filter-item--check-box filter-item--green">
                                                             <label for="filter-{{ $tag->code }}">
                                                                 <input type="checkbox" id="filter-{{ $tag->code }}"
                                                                     ng-click="onChangeFilter({{ $tag->id }})"
                                                                     data-group="tag2" data-field="tags"
-                                                                    data-text="{{ $tag->name }}"
+                                                                    data-text="{{ translate($tag->name, $tag->name_en) }}"
                                                                     value="({{ $tag->code }})" data-operator="OR">
                                                                 <i class="fa"></i>
-                                                                {{ $tag->name }}
+                                                                {{ translate($tag->name, $tag->name_en) }}
                                                             </label>
                                                         </li>
                                                     @endforeach
@@ -123,30 +127,38 @@
                         <div class="sortPagiBar clearfix">
                             <div class="sort-cate clearfix">
                                 <div id="sort-by">
-                                    <label class="left">Sắp xếp theo</label>
+                                    <label class="left">
+                                        {{ $locale == 'vi' ? 'Sắp xếp theo' : 'Sort by'}}
+
+                                    </label>
                                     <ul class="ul_col">
                                         <li>
                                             <span>
-                                                Mặc định
+                                                {{ $locale == 'vi' ? 'Mặc định' : 'Default'}}
                                             </span>
                                             <ul class="content_ul">
-                                                <li><a href="javascript:;" ng-click="filterSort('default')">Mặc định</a>
+                                                <li><a href="javascript:;" ng-click="filterSort('default')">{{ $locale == 'vi' ? 'Mặc định' : 'Default'}}</a>
                                                 </li>
                                                 <li><a href="javascript:;" ng-click="filterSort('alpha-asc')">A &rarr; Z</a>
                                                 </li>
                                                 <li><a href="javascript:;" ng-click="filterSort('alpha-desc')">Z &rarr;
                                                         A</a>
                                                 </li>
-                                                <li><a href="javascript:;" ng-click="filterSort('price-asc')">Giá tăng
-                                                        dần</a>
+                                                <li><a href="javascript:;" ng-click="filterSort('price-asc')">
+
+                                                        {{ $locale == 'vi' ? 'Giá tăng dần' : 'Price: Low to High'}}
+                                                    </a>
                                                 </li>
-                                                <li><a href="javascript:;" ng-click="filterSort('price-desc')">Giá giảm
-                                                        dần</a>
+                                                <li><a href="javascript:;" ng-click="filterSort('price-desc')">                                                        {{ $locale == 'vi' ? 'Giá tăng dần' : 'Price: Low to High'}}
+                                                        {{ $locale == 'vi' ? 'Giá giảm dần' : 'Price: High to Low'}}
+                                                    </a>
                                                 </li>
-                                                <li><a href="javascript:;" ng-click="filterSort('created-desc')">Hàng mới
-                                                        nhất</a></li>
-                                                <li><a href="javascript:;" ng-click="filterSort('created-asc')">Hàng cũ
-                                                        nhất</a></li>
+                                                <li><a href="javascript:;" ng-click="filterSort('created-desc')">
+                                                        {{ $locale == 'vi' ? 'Hàng mới nhất' : 'Newest first'}}
+                                                        </a></li>
+                                                <li><a href="javascript:;" ng-click="filterSort('created-asc')">
+                                                        {{ $locale == 'vi' ? 'Hàng cũ nhất' : 'Oldest first'}}
+                                                    </a></li>
                                             </ul>
                                         </li>
                                     </ul>

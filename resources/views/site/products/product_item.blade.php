@@ -1,11 +1,14 @@
+@php
+    $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+@endphp
 <div class="item_product_main">
     <form class="variants product-action " data-id="product-actions-32949270" enctype="multipart/form-data">
         <div class="product-thumbnail">
             <a class="image_thumb" href="{{ route('front.show-product-detail', $product->slug) }}"
-                title="{{ $product->name }}">
+                title="{{ translate($product->name, $product->name_en)  }}">
                 <img class="lazyload" width="350" height="350" {{-- src="/site/images/lazy.png" --}}
                     src="{{ $product->image ? $product->image->path : 'https://placehold.co/350x350' }}"
-                    alt="{{ $product->name }}" loading="lazy" />
+                    alt="{{ translate($product->name, $product->name_en)  }}" loading="lazy" />
             </a>
             @if ($product->base_price > 0 && $product->price > 0)
                 <span class="smart">-
@@ -46,7 +49,7 @@
         </div>
         <div class="product-info">
             <h3 class="product-name"><a href="{{ route('front.show-product-detail', $product->slug) }}"
-                    title="{{ $product->name }}">{{ $product->name }}</a></h3>
+                    title="{{ translate($product->name, $product->name_en)  }}">{{ translate($product->name, $product->name_en)  }}</a></h3>
             <div class="price-box">
                 @if ($product->base_price > 0 && $product->price > 0)
                     <span class="compare-price">{{ formatCurrency($product->base_price) }}₫</span>
@@ -59,14 +62,19 @@
                     <span class="price">{{ formatCurrency($product->base_price) }}₫
                         {{ $product->unit_id ? ' / ' . $product->unit->name : '' }}</span>
                 @else
-                    <span class="price">Liên hệ</span>
+                    <span class="price">
+                         {{ $locale == 'vi' ? 'Liên hệ' : 'Contact' }}
+
+                    </span>
                 @endif
             </div>
         </div>
         <div class="btn-action">
             <a href="javascript:void(0)" class="btn-action-item" ng-click="addToCart({{ $product->id }})"
                 title="Thêm vào giỏ hàng">
-                <span>Thêm vào giỏ hàng</span>
+                <span>
+                  {{ $locale == 'vi' ? 'Thêm vào giỏ hàng' : 'Add To Cart' }}
+                </span>
                 <span class="btn-icon" title="Thêm vào giỏ">
                     <svg class="btnico-first" version="1.0" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                         <g transform="translate(0 512) scale(.1 -.1)">

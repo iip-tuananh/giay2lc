@@ -29,21 +29,25 @@
 @endsection
 
 @section('content')
+    @php
+        $locale = \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+    @endphp
+
     <section class="bread-crumb">
         <div class="container">
             <ul class="breadcrumb">
                 <li class="home">
-                    <a href="{{ route('front.home-page') }}" title="Trang chủ">
-                        <span>Trang chủ</span>
+                    <a href="{{ route('front.home-page') }}" title="{{ __('menu.home') }}">
+                        <span>{{ __('menu.home') }}</span>
                     </a>
                 </li>
                 <li>
-                    <strong>Liên hệ</strong>
+                    <strong>{{ __('menu.contact') }}</strong>
                 </li>
             </ul>
         </div>
     </section>
-    <h1 class="title-head-contact a-left d-none">Liên hệ</h1>
+    <h1 class="title-head-contact a-left d-none">{{ __('menu.contact') }}</h1>
     <div class="layout-contact" ng-controller="ContactUsController" ng-cloak>
         <div class="container">
             <div class="row">
@@ -54,7 +58,7 @@
                 </div>
                 <div class="col-lg-6 col-12">
                     <div class="contact">
-                        <h4>{{ $config->web_title }}</h4>
+                        <h4>{{ translate($config->web_title, $config->web_title_en) }}</h4>
                         <div class="time_work">
                             <div class="item">
                                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="map-marker-alt"
@@ -64,10 +68,9 @@
                                         d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"
                                         class=""></path>
                                 </svg>
-                                <b>Địa chỉ:</b>
+                                <b>{{ $locale == 'vi' ? 'Địa chỉ' : 'Address' }}:</b>
 
-                                {{ $config->address_company }}
-
+                                {{ translate($config->address_company, $config->address_company_en) }}
                             </div>
                             <div class="item">
                                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="envelope"
@@ -94,16 +97,22 @@
                         </div>
                     </div>
                     <div class="form-contact">
-                        <h4>Liên hệ với chúng tôi</h4>
+                        <h4>
+                            {{ $locale == 'vi' ? 'Liên hệ với chúng tôi' : 'Contact us' }}
+                        </h4>
                         <span class="content-form">
-                            Nếu bạn có thắc mắc gì, có thể gửi yêu cầu cho chúng tôi, và chúng tôi sẽ liên lạc lại với bạn
-                            sớm nhất có thể .
+                             {{ $locale == 'vi' ? 'Nếu bạn có thắc mắc gì, có thể gửi yêu cầu cho chúng tôi, và chúng tôi sẽ liên lạc lại với bạn
+                            sớm nhất có thể .'
+                             : 'If you have any questions, please send us your request and we’ll get back to you as soon as possible.'
+                             }}
+
+
                         </span>
                         <div id="pagelogin">
                             <form id="contact">
                                 <div class="group_contact">
                                     <div class="form-group" style="margin-bottom: 10px;">
-                                        <input placeholder="Họ và tên" type="text" class="form-control  form-control-lg"
+                                        <input placeholder="{{ $locale == 'vi' ? 'Họ và tên' : 'Fullname' }}*" type="text" class="form-control  form-control-lg"
                                             ng-class="{'has-error': errors && errors.your_name}" required
                                             ng-model="your_name" style="margin-bottom: 0px;">
                                         <div class="invalid-feedback d-block error" role="alert">
@@ -125,7 +134,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 10px;">
-                                        <input type="number" placeholder="Điện thoại*"
+                                        <input type="text" placeholder="{{ $locale == 'vi' ? 'Điện thoại' : 'Phone number' }}*"
                                             class="form-control form-control-lg" required
                                             ng-class="{'has-error': errors && errors.your_phone}" ng-model="your_phone"
                                             style="margin-bottom: 0px;">
@@ -136,7 +145,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 10px;">
-                                        <textarea placeholder="Nội dung" id="comment" class="form-control content-area form-control-lg" rows="5"
+                                        <textarea placeholder="{{ $locale == 'vi' ? 'Nội dung' : 'Content' }}*" id="comment" class="form-control content-area form-control-lg" rows="5"
                                             ng-class="{'has-error': errors && errors.your_message}" ng-model="your_message" style="margin-bottom: 0px;"></textarea>
                                         <div class="invalid-feedback d-block error" role="alert">
                                             <span ng-if="errors && errors.your_message">
@@ -145,8 +154,7 @@
                                         </div>
                                     </div>
                                     <button type="submit" class="btn-lienhe" ng-click="submitContact()"
-                                        ng-disabled="loading">Gửi thông
-                                        tin</button>
+                                        ng-disabled="loading"> {{ $locale == 'vi' ? 'Gửi thông tin' : 'Send' }}</button>
                                 </div>
                             </form>
                         </div>
@@ -179,14 +187,17 @@
                     data: data,
                     success: function(response) {
                         if (response.success) {
-                            toastr.success('Thao tác thành công !')
+                            $scope.your_name = $scope.your_email = $scope.your_phone = $scope.your_message = null;
+                            $scope.errors = {};
+
+                            toastr.success(response.message)
                         } else {
                             $scope.errors = response.errors;
-                            toastr.error('Thao tác thất bại !')
+                            toastr.error(response.message)
                         }
                     },
                     error: function() {
-                        toastr.error('Thao tác thất bại !')
+                        toastr.error('Error')
                     },
                     complete: function() {
                         $scope.$applyAsync();

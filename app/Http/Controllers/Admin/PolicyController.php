@@ -69,8 +69,10 @@ class PolicyController extends Controller
             $request->all(),
             [
                 'title' => 'required',
+                'title_en' => 'required',
                 'status' => 'required',
                 'content' => 'required',
+                'content_en' => 'required',
             ]
         );
 
@@ -89,6 +91,10 @@ class PolicyController extends Controller
 
             $object->title = $request->title;
             $object->content = $request->content;
+
+            $object->title_en = $request->title_en;
+            $object->content_en = $request->content_en;
+
             $object->status = $request->status;
             $object->save();
 
@@ -124,8 +130,10 @@ class PolicyController extends Controller
             $request->all(),
             [
                 'title' => 'required',
+                'title_en' => 'required',
                 'status' => 'required',
                 'content' => 'required',
+                'content_en' => 'required',
             ]
         );
         $json = new stdClass();
@@ -143,6 +151,8 @@ class PolicyController extends Controller
             $object->title = $request->title;
             $object->content = $request->content;
             $object->status = $request->status;
+            $object->title_en = $request->title_en;
+            $object->content_en = $request->content_en;
 
             $object->save();
 

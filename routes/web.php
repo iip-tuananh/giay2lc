@@ -308,6 +308,17 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/exportExcel', 'Admin\AttributeController@exportExcel')->name('attributes.exportExcel');
         });
 
+        Route::group(['prefix' => 'tag-groups'], function () {
+            Route::get('/', 'Admin\TagGroupController@index')->name('tagGroups.index');
+            Route::get('/searchData', 'Admin\TagGroupController@searchData')->name('tagGroups.searchData');
+            Route::get('/{id}/show', 'Admin\TagGroupController@show')->name('tagGroups.show');
+            Route::get('/create', 'Admin\TagGroupController@create')->name('tagGroups.create');
+            Route::post('/', 'Admin\TagGroupController@store')->name('tagGroups.store');
+            Route::post('/{id}/update', 'Admin\TagGroupController@update')->name('tagGroups.update');
+            Route::get('/{id}/delete', 'Admin\TagGroupController@delete')->name('tagGroups.delete');
+            Route::get('/{id}/getDataForEdit', 'Admin\TagGroupController@getDataForEdit');
+        });
+
         // ql đơn hàng
         Route::group(['prefix' => 'orders'], function () {
             Route::get('/', 'Admin\OrderController@index')->name('orders.index');

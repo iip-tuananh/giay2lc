@@ -19,8 +19,8 @@
         <div class="container">
             <ul class="breadcrumb">
                 <li class="home">
-                    <a href="{{ route('front.home-page') }}" title="Trang chủ">
-                        <span>Trang chủ</span>
+                    <a href="{{ route('front.home-page') }}" title="{{ __('menu.home') }}">
+                        <span>{{ __('menu.home') }}</span>
                     </a>
                 </li>
                 <li>
