@@ -63,7 +63,7 @@ class CartController extends Controller
                 'slug' => $product->slug,
                 'name_en' => $product->name_en,
                 'base_price' => $product->base_price,
-                'attributes' => $request['attributes']
+                'attributes' => @$request['attributes'] ?? ''
             ]
         ]);
 
