@@ -3128,74 +3128,46 @@
                                         <div class="section-header">
                                             <h2 class="section-title">Phương thức thanh toán</h2>
                                         </div>
-                                        <div class="section-content">
+                                        <div class="section-content" ng-init="form.payment_method = form.payment_method || 1">
                                             <div class="content-box">
+
+                                                <!-- COD -->
                                                 <div class="radio-wrapper content-box-row">
-                                                    <label class="radio-label" for="payment_method_id_1003258623">
+                                                    <label class="radio-label" for="pm_cod">
                                                         <div class="radio-input payment-method-checkbox">
-                                                            <input type-id='1' id="payment_method_id_1003258623"
-                                                                class="input-radio" name="payment_method_id"
-                                                                type="radio" value="1003258623" checked/>
+                                                            <input id="pm_cod" class="input-radio"
+                                                                   type="radio" name="payment_method"
+                                                                   ng-model="form.payment_method" ng-value="1">
                                                         </div>
-                                                        <div class='radio-content-input'>
-                                                            <img class='main-img'
-                                                                src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=6" />
+                                                        <div class="radio-content-input">
+                                                            <img class="main-img" src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=6">
                                                             <div>
-                                                                <span class="radio-label-primary">Thanh toán khi giao
-                                                                    hàng (COD)</span>
-                                                                <span class='quick-tagline hidden'></span>
+                                                                <span class="radio-label-primary">Thanh toán khi giao hàng (COD)</span>
                                                             </div>
                                                         </div>
                                                     </label>
                                                 </div>
 
-                                                <div class="radio-wrapper content-box-row"
-                                                     onclick="window.location.href='/thanh-toan/qr.html' "
-                                                     role="link" style="cursor:pointer">
-                                                    <label class="radio-label" for="payment_method_id_1003258623">
+                                                <!-- QR -->
+                                                <div class="radio-wrapper content-box-row">
+                                                    <label class="radio-label" for="pm_qr">
                                                         <div class="radio-input payment-method-checkbox">
-                                                            <input type-id="2" id="payment_method_id_1003258623"
-                                                                   class="input-radio" name="payment_method_id"
-                                                                   type="radio" value="1003258623">
+                                                            <input id="pm_qr" class="input-radio"
+                                                                   type="radio" name="payment_method"
+                                                                   ng-model="form.payment_method" ng-value="2">
                                                         </div>
                                                         <div class="radio-content-input">
                                                             <img class="main-img" src="https://hstatic.net/0/0/global/design/seller/image/payment/other.svg?v=6">
                                                             <div>
                                                                 <span class="radio-label-primary">Thanh toán chuyển khoản quét QR code</span>
-                                                                <span class="quick-tagline hidden"></span>
                                                             </div>
                                                         </div>
                                                     </label>
                                                 </div>
 
-
-                                                {{-- <div class="radio-wrapper content-box-row">
-                                                    <label class="radio-label" for="payment_method_id_1003258625">
-                                                        <div class="radio-input payment-method-checkbox">
-                                                            <input type-id='2' id="payment_method_id_1003258625"
-                                                                class="input-radio" name="payment_method_id"
-                                                                type="radio" value="1003258625" checked />
-                                                        </div>
-                                                        <div class='radio-content-input'>
-                                                            <img class='main-img'
-                                                                src="https://hstatic.net/0/0/global/design/seller/image/payment/other.svg?v=6" />
-                                                            <div>
-                                                                <span class="radio-label-primary">Chuyển khoản ngân
-                                                                    hàng (Tự động xác nhận giao dịch)</span>
-                                                                <span class='quick-tagline hidden'></span>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                </div> --}}
-                                                {{-- <div class="radio-wrapper content-box-row content-box-row-secondary "
-                                                    for="payment_method_id_1003258625">
-                                                    <div class="blank-slate">
-                                                        Dùng App ngân hàng quét mã QR Code, tự động xác nhận thanh toán
-                                                        trong 10 giây
-                                                    </div>
-                                                </div> --}}
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -3503,7 +3475,12 @@
                     success: function(response) {
                         if (response.success) {
                             toastr.success(response.message);
-                            window.location.href = '{{route('cart.checkout.success')}}';
+                            if(response.payment_method == 1) {
+                                window.location.href = '{{route('cart.checkout.success')}}';
+                            } else {
+                                window.location.href = '{{route('cart.checkoutQr')}}';
+                            }
+
                             // localStorage.removeItem('cart_items_selected');
                             // localStorage.removeItem('total_selected');
                         } else {

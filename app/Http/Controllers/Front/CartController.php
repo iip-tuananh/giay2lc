@@ -63,7 +63,7 @@ class CartController extends Controller
                 'slug' => $product->slug,
                 'name_en' => $product->name_en,
                 'base_price' => $product->base_price,
-                'attributes' => @$request['attributes'] ?? ''
+                'attributes' => @$request['attributes'] ?? []
             ]
         ]);
 
@@ -117,30 +117,40 @@ class CartController extends Controller
         return view('site.orders.checkout', compact('cartCollection', 'total', 'vouchers', 'provinces', 'districts', 'wards'));
     }
 
+//    public function checkoutQr(Request $request) {
+//        $cartCollection = \Cart::getContent();
+//
+//        if($cartCollection->isEmpty()) return redirect()->route('front.home-page');
+//
+//
+//        $total = \Cart::getTotal();
+//        $vouchers = Voucher::query()->where('status', 1)->where('quantity', '>', 0)->where('to_date', '>=', now())->orderBy('created_at', 'desc')->get();
+//        $provinces = Vanthao03596Province::all();
+//        $districts = District::all();
+//        $wards = Ward::all();
+//
+//
+//        // sinh mã đơn hàng
+//        $ms = (int) round(microtime(true) * 1000);
+//        $customerId = auth('client')->id() ?? random_int(10, 99);
+//
+//        $cid  = strtoupper(base_convert((string)$customerId, 10, 36)); // VD: 15 -> F
+//        $time = strtoupper(base_convert((string)$ms,         10, 36)); // VD: L4N9OA
+//        $rand = strtoupper(str_pad(base_convert((string) random_int(0, 36**3 - 1), 10, 36), 3, '0', STR_PAD_LEFT)); // 3 ký tự
+//
+//        $orderCode = 'DH-' . $cid  . '-' . $time .'-'.$rand;
+//
+//        return view('site.orders.checkoutQr', compact('cartCollection', 'total', 'vouchers', 'provinces', 'districts', 'wards', 'orderCode'));
+//    }
     public function checkoutQr(Request $request) {
-        $cartCollection = \Cart::getContent();
+        if (!session()->has('order_id')) {
+            return redirect()->route('front.home-page');
+        }
 
-        if($cartCollection->isEmpty()) return redirect()->route('front.home-page');
+        $orderId = session('order_id') ?? 120;
+        $order = Order::query()->with('details', 'details.product', 'details.product.image')->find($orderId);
 
-
-        $total = \Cart::getTotal();
-        $vouchers = Voucher::query()->where('status', 1)->where('quantity', '>', 0)->where('to_date', '>=', now())->orderBy('created_at', 'desc')->get();
-        $provinces = Vanthao03596Province::all();
-        $districts = District::all();
-        $wards = Ward::all();
-
-
-        // sinh mã đơn hàng
-        $ms = (int) round(microtime(true) * 1000);
-        $customerId = auth('client')->id() ?? random_int(10, 99);
-
-        $cid  = strtoupper(base_convert((string)$customerId, 10, 36)); // VD: 15 -> F
-        $time = strtoupper(base_convert((string)$ms,         10, 36)); // VD: L4N9OA
-        $rand = strtoupper(str_pad(base_convert((string) random_int(0, 36**3 - 1), 10, 36), 3, '0', STR_PAD_LEFT)); // 3 ký tự
-
-        $orderCode = 'DH-' . $cid  . '-' . $time .'-'.$rand;
-
-        return view('site.orders.checkoutQr', compact('cartCollection', 'total', 'vouchers', 'provinces', 'districts', 'wards', 'orderCode'));
+        return view('site.orders.checkoutQr', compact('order'));
     }
 
     // áp dụng mã giảm giá (boolean)
@@ -209,6 +219,7 @@ class CartController extends Controller
             $total_price = $request->total;
 
             $order = Order::query()->create([
+                'customer_id' => auth('client')->id() ?? null,
                 'customer_name' => $request->customer_name,
                 'customer_phone' => $request->customer_phone,
                 'customer_email' => $request->customer_email,
@@ -216,7 +227,9 @@ class CartController extends Controller
                 'customer_required' => $request->customer_required,
                 'discount_code' => $request->discount_code,
                 'discount_value' => $request->discount_value,
+                'payment_method' => $request->payment_method,
                 'point' => $request->point,
+
                 'point_value' => $request->point_value,
                 'total_before_discount' => $total_price,
                 'total_after_discount' => $total_price - $request->discount_value - $request->point_value,
@@ -276,12 +289,12 @@ class CartController extends Controller
 
             if($users->count()) {
                 foreach ($users as $user) {
-                    Mail::to($user->email)->send(new NewOrder($order, $config, 'admin'));
+//                    Mail::to($user->email)->send(new NewOrder($order, $config, 'admin'));
                 }
             }
 
             DB::commit();
-            return Response::json(['success' => true, 'order_code' => $order->code, 'message' => 'Đặt hàng thành công']);
+            return Response::json(['success' => true, 'order_code' => $order->code, 'message' => 'Đặt hàng thành công', 'payment_method' => $request->payment_method]);
         } catch (\Exception $exception) {
             DB::rollBack();
             dd($exception->getMessage());
@@ -292,51 +305,51 @@ class CartController extends Controller
     {
         DB::beginTransaction();
         try {
-            $total_price = $request->total;
-
-            $order = Order::query()->create([
-                'customer_id' => $request->customer_id,
-                'total_after_discount' => $total_price,
-                'code' => $request->order_code,
-                'payment_method' => 2,
-            ]);
-
-            $config = \App\Model\Admin\Config::where('id',1)->select('revenue_percent_1')->first();
-            foreach ($request->items as $item) {
-                $product = Product::query()->where('slug', $item['attributes']['slug'])->first();
-                $detail = new OrderDetail();
-                $detail->order_id = $order->id;
-                $detail->product_id = $product->id;
-                $detail->qty = $item['quantity'];
-                $detail->price = $item['price'];
-                $detail->attributes = isset($item['attributes']['attributes']) ? json_encode($item['attributes']['attributes']) : null;
-                $detail->save();
-
-                \Cart::remove($item['id']);
-            }
-
-
-            if(\Cart::getContent()->sum('quantity') == 0) {
-                \Cart::clear();
-            }
-
-
-            session(['order_id' => $order->id]);
-
-            $config = Config::query()->first();
-
-            // gửi mail thông báo có đơn hàng mới cho admin
-            $users = User::query()->where('type', 1)->where('status', 1)->get();
-            // Mail::to('nguyentienvu4897@gmail.com')->send(new NewOrder($order, $config, 'admin'));
-
-            if($users->count()) {
-                foreach ($users as $user) {
-//                    Mail::to($user->email)->send(new NewOrder($order, $config, 'admin'));
-                }
-            }
+//            $total_price = $request->total;
+//
+//            $order = Order::query()->create([
+//                'customer_id' => $request->customer_id,
+//                'total_after_discount' => $total_price,
+//                'code' => $request->order_code,
+//                'payment_method' => 2,
+//            ]);
+//
+//            $config = \App\Model\Admin\Config::where('id',1)->select('revenue_percent_1')->first();
+//            foreach ($request->items as $item) {
+//                $product = Product::query()->where('slug', $item['attributes']['slug'])->first();
+//                $detail = new OrderDetail();
+//                $detail->order_id = $order->id;
+//                $detail->product_id = $product->id;
+//                $detail->qty = $item['quantity'];
+//                $detail->price = $item['price'];
+//                $detail->attributes = isset($item['attributes']['attributes']) ? json_encode($item['attributes']['attributes']) : null;
+//                $detail->save();
+//
+//                \Cart::remove($item['id']);
+//            }
+//
+//
+//            if(\Cart::getContent()->sum('quantity') == 0) {
+//                \Cart::clear();
+//            }
+//
+//
+//            session(['order_id' => $order->id]);
+//
+//            $config = Config::query()->first();
+//
+//            // gửi mail thông báo có đơn hàng mới cho admin
+//            $users = User::query()->where('type', 1)->where('status', 1)->get();
+//            // Mail::to('nguyentienvu4897@gmail.com')->send(new NewOrder($order, $config, 'admin'));
+//
+//            if($users->count()) {
+//                foreach ($users as $user) {
+////                    Mail::to($user->email)->send(new NewOrder($order, $config, 'admin'));
+//                }
+//            }
 
             DB::commit();
-            return Response::json(['success' => true, 'order_code' => $order->code, 'message' => 'Đặt hàng thành công']);
+            return Response::json(['success' => true, 'message' => 'Đặt hàng thành công']);
         } catch (\Exception $exception) {
             Log::error($exception);
             DB::rollBack();
