@@ -377,7 +377,7 @@
                                     <div class="cart--empty-message" ng-if="!cart.items || cart.count == 0">
                                         <img width="32" height="32"
                                             src="/site/images/no-cart.png?1677998172667">
-                                        <p>Không có sản phẩm nào trong giỏ hàng của bạn</p>
+                                        <p>{{ $locale == 'vi' ? 'Không có sản phẩm nào trong giỏ hàng của bạn' : 'Cart is empty' }}</p>
                                     </div>
                                 </div>
                             </div>

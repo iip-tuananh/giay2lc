@@ -46,6 +46,14 @@
             this._favicon= new Image(value, this);
         }
 
+        get qr() {
+            return this._qr;
+        }
+
+        set qr(value) {
+            this._qr= new Image(value, this);
+        }
+
         get revenue_percent_5() {
             return this._revenue_percent_5;
         }
@@ -147,12 +155,19 @@
                 address_center_insurance_en: this.address_center_insurance_en,
                 text_top_header_en: this.text_top_header_en,
                 web_des_en: this.web_des_en,
+
+                nganhang: this.nganhang,
+                chutaikhoan: this.chutaikhoan,
+                sotaikhoan: this.sotaikhoan,
+                chinhanh: this.chinhanh,
             }
             data = jsonToFormData(data);
             let image = this.image.submit_data;
             if (image) data.append('image', image);
             let favicon = this.favicon.submit_data;
             if (favicon) data.append('favicon', favicon);
+            let qr = this.qr.submit_data;
+            if (qr) data.append('qr', qr);
 
             this.galleries.forEach((g, i) => {
                 if (g.id) data.append(`galleries[${i}][id]`, g.id);

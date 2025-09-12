@@ -118,8 +118,6 @@ class ConfigController extends Controller
             $object->revenue_percent_1 = $request->revenue_percent_1;
             $object->text_top_header = $request->text_top_header;
 
-
-
             $object->web_title_en = $request->web_title_en;
             $object->short_name_company_en = $request->short_name_company_en;
             $object->address_company_en = $request->address_company_en;
@@ -127,6 +125,11 @@ class ConfigController extends Controller
             $object->address_center_insurance_en = $request->address_center_insurance_en;
             $object->text_top_header_en = $request->text_top_header_en;
             $object->web_des_en = $request->web_des_en;
+
+            $object->nganhang = $request->nganhang;
+            $object->chutaikhoan = $request->chutaikhoan;
+            $object->sotaikhoan = $request->sotaikhoan;
+            $object->chinhanh = $request->chinhanh;
 
 
 
@@ -146,6 +149,13 @@ class ConfigController extends Controller
                     // FileHelper::forceDeleteFiles($object->favicon->id, $object->id, ThisModel::class, 'favicon');
                 }
                 FileHelper::uploadFileToCloudflare($request->favicon, $object->id, ThisModel::class, 'favicon');
+            }
+
+            if($request->qr) {
+                if($object->qr) {
+                    FileHelper::deleteFileFromCloudflare($object->qr, $object->id, ThisModel::class, 'qr');
+                }
+                FileHelper::uploadFileToCloudflare($request->qr, $object->id, ThisModel::class, 'qr');
             }
 
             $object->syncGalleries($request->galleries);

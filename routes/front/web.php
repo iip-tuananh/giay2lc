@@ -55,7 +55,9 @@ Route::group(['namespace' => 'Front'], function () {
         Route::get('/gio-hang.html','CartController@index')->name('cart.index');
         Route::post('/update-cart','CartController@updateItem')->name('cart.update.item');
         Route::get('/thanh-toan.html','CartController@checkout')->name('cart.checkout');
+        Route::get('/thanh-toan/qr.html','CartController@checkoutQr')->name('cart.checkoutQr');
         Route::post('/checkout','CartController@checkoutSubmit')->name('cart.submit.order');
+        Route::post('/checkout-qr','CartController@checkoutQrSubmit')->name('cart.submitqr.order');
         Route::get('/dat-hang-thanh-cong.html','CartController@checkoutSuccess')->name('cart.checkout.success');
         Route::post('/apply-voucher','CartController@applyVoucher')->name('cart.apply.voucher');
         // });

@@ -3,12 +3,14 @@
 namespace App\Model\Admin;
 
 use App\Model\BaseModel;
+use App\Model\Common\Customer;
+use App\Model\Common\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
     protected $table = 'orders';
-    protected $fillable = ['id', 'customer_name', 'customer_address',
+    protected $fillable = ['id', 'customer_name', 'customer_address', 'customer_id',
         'customer_email', 'customer_phone', 'customer_required', 'payment_method', 'created_at', 'updated_at', 'code', 'discount_code', 'discount_value', 'total_before_discount', 'total_after_discount'];
 
     protected $appends = ['total_price'];
@@ -24,7 +26,7 @@ class Order extends Model
     public const TYPE_NORMAL = 0;
 
     // Phương thức thanh toán
-    public const PAYMENT_METHODS = [1=> 'Thanh toán khi nhận hàng - COD', 0 => 'Chuyển khoản ngân hàng'];
+    public const PAYMENT_METHODS = [1=> 'Thanh toán khi nhận hàng - COD', 2 => 'Chuyển khoản ngân hàng'];
 
     public const STATUSES = [
         [
@@ -63,6 +65,11 @@ class Order extends Model
     public function details()
     {
         return $this->hasMany(OrderDetail::class, 'order_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'customer_id');
     }
 
     public function canCancel() {

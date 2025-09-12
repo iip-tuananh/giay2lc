@@ -45,6 +45,54 @@ class OrderController extends Controller
             ->editColumn('code', function ($object) {
                 return '<a href = "'.route('orders.show', $object->id).'" title = "Xem chi tiết">' . $object->code . '</a>';
             })
+            ->addColumn('customer', function ($object) {
+                $hasAccount = !empty($object->customer);
+
+                $name  = optional($object->customer)->name  ?: ($object->customer_name ?: 'Khách lẻ');
+                $email = optional($object->customer)->email ?: ($object->customer_email ?? null);
+                $phone = optional($object->customer)->phone ?: ($object->customer_phone ?? null);
+
+                // Avatar chữ cái đầu
+                $avatar = mb_strtoupper(mb_substr(trim($name), 0, 1, 'UTF-8'), 'UTF-8');
+
+                $html  = '<div class="d-flex align-items-center">';
+                $html .= '  <div class="mr-2" style="width:28px;height:28px;border-radius:50%;background:#eef2f7;display:flex;align-items:center;justify-content:center;font-weight:700;">'.e($avatar).'</div>';
+                $html .= '  <div>';
+                $html .= '    <div class="font-weight-bold">'.e($name);
+                if (!$hasAccount) {
+                    $html .= ' <span class="badge badge-secondary" title="Đơn khách lẻ">Khách lẻ</span>';
+                }
+                $html .= '    </div>';
+                if ($email) {
+                    $html .= '    <div class="small"><a href="mailto:'.e($email).'">'.e($email).'</a></div>';
+                }
+                if ($phone) {
+                    $html .= '    <div class="small text-muted">'.e($phone).'</div>';
+                }
+                $html .= '  </div>';
+                $html .= '</div>';
+
+                return $html;
+            })
+            ->editColumn('payment_method', function ($object) {
+                    $val = is_numeric($object->payment_method)
+                        ? (int)$object->payment_method
+                        : strtolower((string)$object->payment_method);
+
+                    $map = [
+                        1      => ['badge' => 'success',  'icon' => 'fa-truck',            'label' => 'Thanh toán khi nhận hàng'],
+                        2      => ['badge' => 'info',     'icon' => 'fa-qrcode',           'label' => 'Thanh toán QR code'],
+                        'cod'  => ['badge' => 'success',  'icon' => 'fa-truck',            'label' => 'Thanh toán khi nhận hàng'],
+                        'qr'   => ['badge' => 'info',     'icon' => 'fa-qrcode',           'label' => 'Thanh toán QR code'],
+                        // thêm trường hợp khác nếu có:
+                        'bank' => ['badge' => 'primary',  'icon' => 'fa-university',       'label' => 'Chuyển khoản ngân hàng'],
+                    ];
+                    $m = $map[$val] ?? ['badge' => 'secondary', 'icon' => 'fa-question-circle', 'label' => 'Không rõ'];
+
+                    return '<span class="badge badge-'.$m['badge'].'">'
+                        .    '<i class="fa '.$m['icon'].' mr-1"></i>'.e($m['label'])
+                        . '</span>';
+                })
             ->editColumn('type', function ($object) {
                 return $object->type == 0 ? 'Đơn hàng thường' : 'Đơn hàng affiliate';
             })
@@ -81,13 +129,26 @@ class OrderController extends Controller
                 return $result;
             })
             ->addIndexColumn()
-            ->rawColumns(['code', 'action', 'action_client', 'code_client'])
+            ->rawColumns(['code', 'action', 'action_client', 'code_client', 'customer', 'payment_method'])
             ->make(true);
     }
 
     public function show(Request $request, $id) {
-        $order = Order::query()->with(['details.product'])->find($id);
-//        $order->payment_method_name = Order::PAYMENT_METHODS[$order->payment_method];
+        $order = Order::query()->with(['details.product', 'customer'])->find($id);
+        $order->payment_method_name = @Order::PAYMENT_METHODS[$order->payment_method] ?? 'Thanh toán khi nhận hàng';
+        $customer = $order->customer;
+
+        if($customer){
+            $customerInfo['name'] = $customer->name;
+            $customerInfo['email'] = $customer->email;
+        } else {
+            $customerInfo['name'] = $order->customer_name;
+            $customerInfo['email'] = $order->customer_email;
+            $customerInfo['phone'] = $order->customer_phone;
+            $customerInfo['address'] = $order->customer_address;
+        }
+
+        $order->customerInfo = $customerInfo;
 
         return view($this->view . '.show', compact('order'));
     }

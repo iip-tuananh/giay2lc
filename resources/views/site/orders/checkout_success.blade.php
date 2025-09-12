@@ -2243,7 +2243,7 @@
                             Mã đơn hàng #{{$order->code}}
                             </span>
                             <span class="os-description">
-                                Cảm ơn bạn đã mua hàng, vui lòng xác nhận thông tin của bạn để hoàn tất đơn hàng
+                                Cảm ơn bạn đã mua hàng, chúng tôi đang tiến hành xác minh và sẽ gửi bạn thông tin sớm nhất.
                             </span>
                         </div>
                         </div>
@@ -2270,7 +2270,11 @@
                                     </p>
                                     <h3>Phương thức thanh toán</h3>
                                     <p>
-                                        Thanh toán khi nhận hàng
+                                        @if (request()->query('method') === 'qr')
+                                            Thanh toán qua QR code
+                                        @else
+                                            Thanh toán khi nhận hàng
+                                        @endif
                                     </p>
                                     </div>
                                 </div>
@@ -2322,7 +2326,7 @@
                     </div>
                     <div class="step-footer">
                         <a href="{{route('front.home-page')}}" class="step-footer-continue-btn btn">
-                        <span class="btn-content">Xác nhận mua hàng</span>
+                        <span class="btn-content">Quay về trang chủ</span>
                         </a>
                         <p class="step-footer-info">
                         <i class="icon icon-os-question"></i>

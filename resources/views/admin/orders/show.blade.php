@@ -4,11 +4,11 @@
 @endsection
 
 @section('page_title')
-    Chi tiết đơn hàng
+    Chi tiết đơn hàng {{ $order->code }}
 @endsection
 
 @section('title')
-    Chi tiết đơn hàng
+    Chi tiết đơn hàng {{ $order->code }}
 @endsection
 
 @section('buttons')
@@ -27,24 +27,24 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Khách hàng: <% form.customer_name %> </label>
+                                <label class="form-label">Khách hàng: <% form.customerInfo.name %> </label>
 
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Email: <% form.customer_email %></label>
+                                <label class="form-label">Email: <% form.customerInfo.email %></label>
 
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">SĐT: <% form.customer_phone %></label>
+                                <label class="form-label">SĐT: <% form.customerInfo.phone %></label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Địa chỉ: <% form.customer_address %> </label>
+                                <label class="form-label">Địa chỉ: <% form.customerInfo.address %> </label>
                             </div>
                         </div>
                         <div class="col-md-6">

@@ -91,8 +91,9 @@ Quản lý đơn hàng
             {data: 'DT_RowIndex', orderable: false, title: "STT", className: "text-center"},
             // {data: 'type', title: 'Loại đơn hàng', className: "text-center"},
             {data: 'code', title: 'Mã'},
-            {data: 'customer_name', title: 'Tên khách hàng'},
+            {data: 'customer', title: 'Tên khách hàng'},
             {data: 'customer_phone', title: 'SĐT khách hàng'},
+            {data: 'payment_method', title: 'Phương thức thanh toán'},
             {data: 'total_price', title: 'Tổng tiền'},
             {
                 data: 'status',
